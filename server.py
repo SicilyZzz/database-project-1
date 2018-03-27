@@ -152,7 +152,7 @@ def index():
   #
   username="guest"
   if session.get('logged_in'):
-      username=session['username']
+      username=session['u_name']
   
   context = dict(data = names, username=username)
 
@@ -193,10 +193,11 @@ def login_act():
     user['password'] = request.form['password'] 
     cursor = g.conn.execute("SELECT * FROM users WHERE account=\'%(account)s\' AND password=\'%(password)s\'" % user)
     for result in cursor:
-        session=result
+        
         session['logged_in']=True
-        # session['account']=result['account']
-        # session['uid']=
+        session['account']=result['account']
+        session['uid']=result['uid']
+        session['u_name']=result['u_name']
     cursor.close()
     return redirect('/')
 @app.route('/login_page')
@@ -265,6 +266,7 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print("running on %s:%d" % (HOST, PORT))
+    app.secret_key = os.urandom(12) # added
     app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 
 
