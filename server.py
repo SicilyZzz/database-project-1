@@ -174,11 +174,19 @@ def add():
   #g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
   return redirect('/')
 
-
-@app.route('/login')
-def login():
-    abort(401)
-    this_is_never_executed()
+@app.route('/login_act', methods=['POST'])
+def login_act():
+    # abort(401)
+    # this_is_never_executed()
+    acc = request.form['acc']
+    pw = request.form['pw']
+    return redirect('/')
+@app.route('/login_page')
+def login_page():
+    # abort(401)
+    # this_is_never_executed()
+    
+    return render_template("login.html")
 
 
 if __name__ == "__main__":
