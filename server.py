@@ -34,7 +34,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #
 #     DATABASEURI = "postgresql://gravano:foobar@35.227.79.146/proj1part2"
 #
-DATABASEURI = "postgresql://user:password@35.227.79.146/proj1part2"
+DATABASEURI = "postgresql://mz2655:3940@35.227.79.146/proj1part2"
 
 
 #
@@ -46,11 +46,11 @@ engine = create_engine(DATABASEURI)
 # Example of running queries in your database
 # Note that this will probably not work if you already have a table named 'test' in your database, containing meaningful data. This is only an example showing you how to run queries in your database using SQLAlchemy.
 #
-engine.execute("""CREATE TABLE IF NOT EXISTS test (
-  id serial,
-  name text
-);""")
-engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
+# engine.execute("""CREATE TABLE IF NOT EXISTS test (
+#   id serial,
+#   name text
+# );""")
+# engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
 
 
 @app.before_request
@@ -65,7 +65,7 @@ def before_request():
   try:
     g.conn = engine.connect()
   except:
-    print "uh oh, problem connecting to database"
+    print ("uh oh, problem connecting to database")
     import traceback; traceback.print_exc()
     g.conn = None
 
@@ -107,16 +107,16 @@ def index():
   """
 
   # DEBUG: this is debugging code to see what request looks like
-  print request.args
+  print(request.args)
 
 
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
+  cursor = g.conn.execute("SELECT r_name FROM restaurants LIMIT 10")
   names = []
   for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
+    names.append(result['r_name'])  # can also be accessed using result[0]
   cursor.close()
 
   #
@@ -171,7 +171,7 @@ def another():
 @app.route('/add', methods=['POST'])
 def add():
   name = request.form['name']
-  g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
+  #g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
   return redirect('/')
 
 
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     """
 
     HOST, PORT = host, port
-    print "running on %s:%d" % (HOST, PORT)
+    print("running on %s:%d" % (HOST, PORT))
     app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 
 
