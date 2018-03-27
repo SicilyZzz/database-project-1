@@ -21,7 +21,8 @@ from flask import Flask, request, render_template, g, redirect, Response
 
 # other library:
 import datetime
-import hashlib
+# import hashlib
+from flask import session
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -149,7 +150,11 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+  username="guest"
+  if session.get('logged_in'):
+      username=session['username']
+  
+  context = dict(data = names, username=username)
 
 
   #
@@ -183,8 +188,16 @@ def add():
 def login_act():
     # abort(401)
     # this_is_never_executed()
-    acc = request.form['account']
-    pw = request.form['password']
+    user={}
+    user['account'] = request.form['account']
+    user['password'] = request.form['password'] 
+    cursor = g.conn.execute("SELECT * FROM users WHERE account=\'%(account)s\' AND password=\'%(password)s\'" % user)
+    for result in cursor:
+        session=result
+        session['logged_in']=True
+        # session['account']=result['account']
+        # session['uid']=
+    cursor.close()
     return redirect('/')
 @app.route('/login_page')
 def login_page():
@@ -194,28 +207,34 @@ def login_page():
 # Register
 @app.route('/register_act', methods=['POST'])
 def register_act():
-    
-    u_name = request.form['u_name']
-    acc = request.form['account']
-    pw = request.form['password']
+    user={}
+    user['u_name'] = request.form['u_name']
+    user['account'] = request.form['account']
+    user['password'] = request.form['password']
     conf_pw = request.form['conf_pw']
-    since=datetime.datetime.now().strftime("%Y-%m-%d")
+    user['since']=datetime.datetime.now().strftime("%Y-%m-%d")
     
     # m=hashlib.blake2s()
     # m.update(u_name.encode('utf-8')+str(datetime.datetime.now().isoformat()).encode('utf-8'))
     # uid=m.hexdigest()
     
-    uid=u_name
+    uid=user['u_name']
     cursor = g.conn.execute("SELECT COUNT(uid) FROM users")
     for result in cursor:
-        uid=result+1
+        uid=int(result[0])+1
     cursor.close()
-
-    context = dict(data = [u_name, acc, pw, conf_pw, since, uid])
-
-    #g.conn.execute('INSERT INTO users(u_name, ) VALUES (%s)', name)
-    return render_template("register.html", **context)
-    # return redirect('/')
+    user['uid']=str(uid)
+    if user['password']!=conf_pw:
+        flash('Passwords not match.')
+        
+    else: 
+        try:
+            g.conn.execute('INSERT INTO users(uid, u_name, account, password, since) VALUES (%(uid)s, %(u_name)s, %(account)s, %(password)s, %(since)s)', user)
+        except:
+            flash('account exist?')
+    # context = dict(data = [u_name, acc, pw, conf_pw, since, uid]) # show on page
+    # return render_template("register.html", **context)
+    return redirect('/')
 @app.route('/register_page')
 def register_page():
     # abort(401)
