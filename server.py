@@ -19,6 +19,10 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
 
+# other library:
+import datetime
+import hashlib
+
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
@@ -174,19 +178,49 @@ def add():
   #g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
   return redirect('/')
 
+# Login
 @app.route('/login_act', methods=['POST'])
 def login_act():
     # abort(401)
     # this_is_never_executed()
-    acc = request.form['acc']
-    pw = request.form['pw']
+    acc = request.form['account']
+    pw = request.form['password']
     return redirect('/')
 @app.route('/login_page')
 def login_page():
     # abort(401)
     # this_is_never_executed()
-    
     return render_template("login.html")
+# Register
+@app.route('/register_act', methods=['POST'])
+def register_act():
+    
+    u_name = request.form['u_name']
+    acc = request.form['account']
+    pw = request.form['password']
+    conf_pw = request.form['conf_pw']
+    since=datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    # m=hashlib.blake2s()
+    # m.update(u_name.encode('utf-8')+str(datetime.datetime.now().isoformat()).encode('utf-8'))
+    # uid=m.hexdigest()
+    
+    uid=u_name
+    cursor = g.conn.execute("SELECT COUNT(uid) FROM users")
+    for result in cursor:
+        uid=result+1
+    cursor.close()
+
+    context = dict(data = [u_name, acc, pw, conf_pw, since, uid])
+
+    #g.conn.execute('INSERT INTO users(u_name, ) VALUES (%s)', name)
+    return render_template("register.html", **context)
+    # return redirect('/')
+@app.route('/register_page')
+def register_page():
+    # abort(401)
+    # this_is_never_executed()
+    return render_template("register.html")
 
 
 if __name__ == "__main__":

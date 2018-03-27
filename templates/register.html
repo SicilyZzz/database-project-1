@@ -1,5 +1,5 @@
 <html>
-<title>Login</title>
+<title>Register</title>
 <head>
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -30,12 +30,21 @@
  -->
 <p><a href="index">Home</a></p>
 
+<h1>Some famous Computer Scientists</h1>
+  <div>{{data}}</div>
 
+  <div>
+    {% for n in data %}
+    <div>{{n}}</div>
+    {% endfor %}
+  </div>
 
-<form method="POST" action="/login_act">
+<form method="POST" action="/register_act">
+<p>Name: <input type="text" name="u_name"></p>
 <p>Account: <input type="text" name="account"></p>
 <p>Password: <input type="password" name="password"></p>
-<p><input type="submit" value="login" class="btn btn-primary"></p>
+<p>Password confirmation: <input type="text" name="conf_pw"></p>
+<p><input type="submit" value="register" class="btn btn-primary"></p>
 </form>
 
 </body>
