@@ -266,9 +266,10 @@ def search_restaurants_act():
     print(restaurants)
     names = []
     if restaurants['r_name']:
-        cursor = g.conn.execute("SELECT r_name FROM restaurants WHERE r_name=%(r_name)s", restaurants)
+        cursor = g.conn.execute("SELECT * FROM restaurants WHERE r_name=%(r_name)s", restaurants)
         for result in cursor:
-            names.append(result['r_name'])  # can also be accessed using result[0]
+            names.append(result)
+            # names.append(result['r_name'])  # can also be accessed using result[0]
         cursor.close()
     
     
