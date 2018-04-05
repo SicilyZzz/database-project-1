@@ -19,13 +19,18 @@
 
 
 <body>
-  <!-- Login/Logout/Register -->
-  {% if not session.logged_in %}
-    <p><a href="login_page">Login</a></p>
-    <p><a href="register_page">Register</a></p>
-  {% else %}
-    <p><a href="logout_act">Logout</a></p>
-  {% endif %}
+  <!-- Menu -->
+  <ul class="nav nav-pills">
+    <li role="presentation" class="active"><a href="index">Home</a></li>
+    <li role="presentation"><a href="search_restaurants">Search Restaurants</a></li>
+    {% if not session.logged_in %}
+      <li role="presentation"><a href="login_page">Login</a></li>
+      <li role="presentation"><a href="register_page">Register</a></li>
+    {% else %}
+      <li role="presentation"><a href="logout_act">Logout</a></li>
+    {% endif %}
+  </ul>
+  <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
   <p><a href="search_restaurants">Search Restaurants</a></p>
   <h1>Some famous Computer Scientists</h1>
