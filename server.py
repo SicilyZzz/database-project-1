@@ -205,6 +205,19 @@ def login_page():
     # abort(401)
     # this_is_never_executed()
     return render_template("login.html")
+# Logout
+@app.route('/logout_act', methods=['POST'])
+def logout_act():
+    # abort(401)
+    # this_is_never_executed()
+    if session.get('logged_in'):
+        session['logged_in']=False
+        session['account']=None
+        session['uid']=None
+        session['u_name']=None
+    
+    return redirect('/')
+
 # Register
 @app.route('/register_act', methods=['POST'])
 def register_act():
