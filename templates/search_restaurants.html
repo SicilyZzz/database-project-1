@@ -20,12 +20,18 @@
 
 <body>
   <!-- Login/Logout/Register -->
-  {% if not session.logged_in %}
-    <p><a href="login_page">Login</a></p>
-    <p><a href="register_page">Register</a></p>
-  {% else %}
-    <p><a href="logout_act">Logout</a></p>
-  {% endif %}
+  <ul class="nav nav-pills">
+    <li role="presentation"><a href="index">Home</a></li>
+    <li role="presentation" class="active"><a href="search_restaurants">Search Restaurants</a></li>
+    {% if not session.logged_in %}
+      <li role="presentation"><a href="login_page">Login</a></li>
+      <li role="presentation"><a href="register_page">Register</a></li>
+    {% else %}
+      <li role="presentation"><a href="logout_act">Logout</a></li>
+    {% endif %}
+  </ul>
+
+  
     
   <p>Hello <span id="username">{{ username }}</span></p>
   
