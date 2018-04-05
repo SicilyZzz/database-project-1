@@ -19,6 +19,17 @@
 
 
 <body>
+  <!-- Menu -->
+  <ul class="nav nav-pills">
+    <li role="presentation"><a href="/">Home</a></li>
+    <li role="presentation"><a href="search_restaurants">Search Restaurants</a></li>
+    {% if not session.logged_in %}
+      <li role="presentation" class="active"><a href="login_page">Login</a></li>
+      <li role="presentation"><a href="register_page">Register</a></li>
+    {% else %}
+      <li role="presentation"><a href="logout_act">Logout</a></li>
+    {% endif %}
+  </ul>
   <h1>Login</h1>
   <!-- <div>{{data}}</div>
 
@@ -28,7 +39,7 @@
     {% endfor %}
   </div>
  -->
-<p><a href="index">Home</a></p>
+<p><a href="index">Login</a></p>
 
 
 

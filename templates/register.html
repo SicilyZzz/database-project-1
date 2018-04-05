@@ -19,25 +19,29 @@
 
 
 <body>
-  <h1>Login</h1>
-  <!-- <div>{{data}}</div>
+  <!-- Menu -->
+  <ul class="nav nav-pills">
+    <li role="presentation"><a href="/">Home</a></li>
+    <li role="presentation"><a href="search_restaurants">Search Restaurants</a></li>
+    {% if not session.logged_in %}
+      <li role="presentation"><a href="login_page">Login</a></li>
+      <li role="presentation" class="active"><a href="register_page">Register</a></li>
+    {% else %}
+      <li role="presentation"><a href="logout_act">Logout</a></li>
+    {% endif %}
+  </ul>
+  <h1>Register</h1>
+  
+  
 
-  <div>
-    {% for n in data %}
-    <div>{{n}}</div>
-    {% endfor %}
-  </div>
- -->
-<p><a href="index">Home</a></p>
-
-<h1>Some famous Computer Scientists</h1>
+<!-- <h1>Some famous Computer Scientists</h1>
   <div>{{data}}</div>
 
   <div>
     {% for n in data %}
     <div>{{n}}</div>
     {% endfor %}
-  </div>
+  </div> -->
 
 <form method="POST" action="/register_act">
 <p>Name: <input type="text" name="u_name"></p>

@@ -21,7 +21,7 @@
 <body>
   <!-- Menu -->
   <ul class="nav nav-pills">
-    <li role="presentation" class="active"><a href="index">Home</a></li>
+    <li role="presentation" class="active" ><a href="/">Home</a></li>
     <li role="presentation"><a href="search_restaurants">Search Restaurants</a></li>
     {% if not session.logged_in %}
       <li role="presentation"><a href="login_page">Login</a></li>
@@ -33,7 +33,7 @@
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
   <p><a href="search_restaurants">Search Restaurants</a></p>
-  <h1>Some famous Computer Scientists</h1>
+  <h1>Home</h1>
   <div>{{data}}</div>
   <div>
     {% for n in data %}
