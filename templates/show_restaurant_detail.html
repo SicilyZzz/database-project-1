@@ -124,7 +124,7 @@
         
         {% if n.is_friend %}
         <!-- friend / delete friend -->
-        <a href=""><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+        <a href="{{url_for('del_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
         
         {% else %}
         <!-- not friend / add friend -->
