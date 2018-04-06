@@ -290,7 +290,7 @@ def search_restaurants_act():
     try:
         cursor = g.conn.execute(sql)
         for result in cursor:
-            results.append(result)
+            results.append(dict(result))
             # names.append(result['r_name'])  # can also be accessed using result[0]
         cursor.close()
     except:
@@ -330,11 +330,23 @@ def show_restaurant_details():
     try:
         cursor = g.conn.execute('SELECT * FROM reviews WHERE rid=%(rid)s', restaurant)
         for result in cursor:
-            reviews.append(result)
+            reviews.append(dict(result))
             # names.append(result['r_name'])  # can also be accessed using result[0]
         cursor.close()
     except:
         flash('error')
+    for i_review in range(len(reviews)):
+        try:
+            # print(reviews[i_review])
+            cursor = g.conn.execute('SELECT u_name FROM users WHERE uid=%(uid)s', reviews[i_review])
+            for result in cursor:
+                # print(result)
+                reviews[i_review]['u_name']=result['u_name']
+
+                # names.append(result['r_name'])  # can also be accessed using result[0]
+            cursor.close()
+        except:
+            flash('error')
     # print(reviews)
     context = dict(data = restaurant, username=username, reviews=reviews, rid=restaurant['rid'])
 
