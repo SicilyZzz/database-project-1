@@ -34,7 +34,17 @@
   <h1>Search for restaurants</h1>
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
-  
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 
 <form class="navbar-form navbar-left" role="search" method="POST" action="/search_restaurants_act">
   <div class="form-group">

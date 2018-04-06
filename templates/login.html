@@ -31,16 +31,16 @@
     {% endif %}
   </ul>
   <h1>Login</h1>
-  <!-- <div>{{data}}</div>
 
-  <div>
-    {% for n in data %}
-    <div>{{n}}</div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
     {% endfor %}
-  </div>
- -->
-<p><a href="index">Login</a></p>
-
+    </ul>
+  {% endif %}
+{% endwith %}
 
 
 <form method="POST" action="/login_act">

@@ -199,10 +199,12 @@ def login_act():
         session['uid']=result['uid']
         session['u_name']=result['u_name']
     cursor.close()
+    if not session.get('logged_in'):
+        flash('wrong username or password')
+        return render_template("login.html")
     return redirect('/')
 @app.route('/login_page')
 def login_page():
-    
     return render_template("login.html")
 # Logout
 @app.route('/logout_act')
@@ -239,12 +241,14 @@ def register_act():
     user['uid']=str(uid)
     if user['password']!=conf_pw:
         flash('Passwords not match.')
+        return render_template("register.html")
         
     else: 
         try:
             g.conn.execute('INSERT INTO users(uid, u_name, account, password, since) VALUES (%(uid)s, %(u_name)s, %(account)s, %(password)s, %(since)s)', user)
         except:
-            flash('account exist?')
+            flash('account exist')
+            return render_template("register.html")
     # context = dict(data = [u_name, acc, pw, conf_pw, since, uid]) # show on page
     # return render_template("register.html", **context)
     return redirect('/')

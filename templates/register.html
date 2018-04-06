@@ -31,17 +31,16 @@
     {% endif %}
   </ul>
   <h1>Register</h1>
-  
-  
-
-<!-- <h1>Some famous Computer Scientists</h1>
-  <div>{{data}}</div>
-
-  <div>
-    {% for n in data %}
-    <div>{{n}}</div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
     {% endfor %}
-  </div> -->
+    </ul>
+  {% endif %}
+{% endwith %}
+
 
 <form method="POST" action="/register_act">
 <p>Name: <input type="text" name="u_name"></p>

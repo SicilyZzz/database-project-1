@@ -35,7 +35,17 @@
   <h1>Show restaurant details</h1>
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
-  
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
 
 <p>Results:</p>
