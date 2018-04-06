@@ -119,16 +119,17 @@
       <td>{{n.u_name}}
         <button type="button" class="btn">
         <!-- TODO:  -->
-
+        
         <!-- <span class="glyphicon glyphicon{{n.is_friend}}" aria-hidden="true"></span> -->
-        <!-- not friend -->
+        <!-- not friend / add friend -->
         {% if not n.is_friend %}
-        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-        <!-- friend -->
+        <a href="{{url_for('add_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+        <!-- friend / delete friend -->
         {% else %}
         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
         {% endif %}
         </button>
+        
       </td>
       <td>{{n.rid}}</td>
     </tr>

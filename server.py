@@ -416,6 +416,30 @@ def write_review_act():
 # write tip
 # show user list
 # friend
+# write a review
+@app.route('/add_friend_act')
+def add_friend_act():
+    # print(request.form['review_text'])
+    info={}
+    info['rid']=request.args.get('rid')
+    info['uid']=request.args.get('uid')
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        # you cannot add a friend without login
+        return redirect(url_for('show_restaurant_details', rid=info['rid']))
+    friend={}
+    friend['uid_a']=session['uid']
+    friend['uid_b']=info['uid']
+    try:
+        g.conn.execute('INSERT INTO friends(uid_a, uid_b) VALUES (%(uid_a)s, %(uid_b)s)', friend)
+        
+    except:
+        flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_restaurant_details', rid=info['rid']))
 if __name__ == "__main__":
     import click
 
