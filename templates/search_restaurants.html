@@ -76,12 +76,14 @@
           <th scope="row">{{n.rid}}</th>
           <td>{{n.r_name}}</td>
           <td>{{n.noiselevel}}</td>
-          <td><a href="{{url_for('show_restaurant_details', rid=n.rid)}}">details</a></td>
+          <td><a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   {% endif %}
+<span style="position:absolute; bottom:0; right:0;"><a href="http://glyphicons.com/">Glyphicons</a></span>
 </body>
 
 
