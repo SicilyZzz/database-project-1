@@ -118,8 +118,16 @@
       <th scope="row">{{n.review_id}}</th>
       <td>{{n.rating}}</td>
       <td>{{n.plaintext}}</td>
-      <td>{{n.useful}}</td>
-      <td>{{n.funny}}</td>
+      <td>{{n.useful}}
+        <a href="{{url_for('review_vote_act', vote_type='useful', rid=n.rid, review_id=n.review_id)}}">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+      </td>
+      <td>{{n.funny}}
+        <a href="{{url_for('review_vote_act', vote_type='funny', rid=n.rid, review_id=n.review_id)}}">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+      </td>
       <td>{{n.cool}}
         <a href="{{url_for('review_vote_act', vote_type='cool', rid=n.rid, review_id=n.review_id)}}">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
