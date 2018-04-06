@@ -73,7 +73,7 @@
             <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
             
             {% else %}
-            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+            <a href="{{url_for('del_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
             
             {% endif %}
           </td>

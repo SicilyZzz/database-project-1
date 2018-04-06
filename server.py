@@ -466,7 +466,27 @@ def add_bookmark_act():
         flash('error')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
-# delete bookmark (TODO)
+# delete bookmark
+# add bookmark
+@app.route('/del_bookmark_act')
+def del_bookmark_act():
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        flash('you cannot delete a bookmark without login')
+        return redirect(url_for('show_restaurant_details', rid=info['rid']))
+    info={}
+    info['rid']=request.args.get('rid')
+    info['uid']=session['uid']
+    # print(info)
+    try:
+        g.conn.execute('DELETE FROM bookmarks WHERE uid=%(uid)s AND rid=%(rid)s)', info)
+        flash('delete a bookmark successfully')
+    except:
+        flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_restaurant_details', rid=info['rid']))
 # friend
 @app.route('/add_friend_act')
 def add_friend_act():
@@ -542,7 +562,6 @@ def del_friend_act():
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
 # some TODOs
-# bookmarks
 
 # write tip
 # view friend lists
