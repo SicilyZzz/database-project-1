@@ -336,6 +336,7 @@ def show_restaurant_details():
     except:
         flash('error')
     for i_review in range(len(reviews)):
+        # print("get friends info")
         try:
             # print(reviews[i_review])
             cursor = g.conn.execute('SELECT u_name FROM users WHERE uid=%(uid)s', reviews[i_review])
@@ -345,23 +346,25 @@ def show_restaurant_details():
 
                 # names.append(result['r_name'])  # can also be accessed using result[0]
             cursor.close()
-            reviews[i_review]['is_friend']=False
+            reviews[i_review]['is_friend']=None
+            # print(reviews[i_review])
             if session.get('logged_in'):
-                # try:
-                # print(reviews[i_review])
-                cursor = g.conn.execute("SELECT uid_b FROM friends WHERE uid_a="+session['u_name']+" AND uid_b="+reviews[i_review]['uid'])
-                # reviews[i_review]['is_friend']='-star-empty'
-                for result in cursor:
-                    # print(result)
 
-                    # reviews[i_review]['is_friend']='-star'
-                    reviews[i_review]['is_friend']=True
+                try:
+                    # print(reviews[i_review])
+                    cursor = g.conn.execute("SELECT uid_b FROM friends WHERE uid_a="+session['uid']+" AND uid_b="+reviews[i_review]['uid'])
+                    # reviews[i_review]['is_friend']='-star-empty'
+                    for result in cursor:
+                        # print(result)
 
-                    # names.append(result['r_name'])  # can also be accessed using result[0]
-                cursor.close()
-                print(reviews)
-                # except:
-                #     flash('error')
+                        # reviews[i_review]['is_friend']='-star'
+                        reviews[i_review]['is_friend']=True
+
+                        # names.append(result['r_name'])  # can also be accessed using result[0]
+                    cursor.close()
+                    print(reviews[i_review])
+                except:
+                    flash('error')
         except:
             flash('error')
     # print(reviews)
@@ -411,12 +414,8 @@ def write_review_act():
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
-# some TODOs
-# bookmarks
-# write tip
-# show user list
+
 # friend
-# write a review
 @app.route('/add_friend_act')
 def add_friend_act():
     # print(request.form['review_text'])
@@ -440,6 +439,11 @@ def add_friend_act():
         flash('error')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
+# some TODOs
+# bookmarks
+# write tip
+# show user list
+
 if __name__ == "__main__":
     import click
 
