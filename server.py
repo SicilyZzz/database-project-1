@@ -353,9 +353,9 @@ def show_restaurant_details():
             if session.get('logged_in'):
 
                 try:
-                    print(reviews[i_review])
+                    # print(reviews[i_review])
                     sql="SELECT uid_b FROM friends WHERE uid_a='"+session['uid']+"' AND uid_b='"+reviews[i_review]['uid']+"'"
-                    print(sql)
+                    # print(sql)
                     cursor = g.conn.execute(sql)
                     # reviews[i_review]['is_friend']='-star-empty'
                     for result in cursor:
@@ -366,7 +366,7 @@ def show_restaurant_details():
 
                         # names.append(result['r_name'])  # can also be accessed using result[0]
                     cursor.close()
-                    print(reviews[i_review])
+                    # print(reviews[i_review])
                 except:
                     flash('error')
         except:
