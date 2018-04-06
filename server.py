@@ -205,7 +205,7 @@ def login_page():
     
     return render_template("login.html")
 # Logout
-@app.route('/logout_act', methods=['POST'])
+@app.route('/logout_act')
 def logout_act():
     # abort(401)
     # this_is_never_executed()
