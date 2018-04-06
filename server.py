@@ -261,32 +261,54 @@ def search_restaurants_act():
     print(request.args)
 
     restaurants={}
-    restaurants['r_name'] = request.form['r_name']
+    # restaurants['r_name'] = request.form['r_name']
+
     # restaurants['password'] = request.form['password'] 
+    
+    # print(request.form['noiselevel'])
+    results = []
+    sql="SELECT * FROM restaurants "
+    flag=False
+    colnames=['r_name', 'noiselevel']#, 'smoking', 'dogsallowed', 'hastv', 'accepts_credit_cards', 'goodforkids', 'alcohol', 'wifi', 'stars']#, 'dessert', 'latenight', ]
+    
+    for col in colnames:
+        if col in request.form:
+            restaurants[col]=request.form[col]
+    for col in colnames:
+        print(sql)
+        if col in restaurants and restaurants[col]!="Not Specified":
+            sp=""
+            if type(restaurants[col])==type(""):
+                sp="'"
+            if not flag:
+                sql=sql+" WHERE "
+                flag=True
+                sql=sql+col+"="+sp+restaurants[col]+sp
+            else:
+                sql=sql+"AND "+col+"="+sp+restaurants[col]+sp
+            
     print(restaurants)
-    names = []
-    if restaurants['r_name']:
-        cursor = g.conn.execute("SELECT * FROM restaurants WHERE r_name=%(r_name)s", restaurants)
-        for result in cursor:
-            names.append(result)
-            # names.append(result['r_name'])  # can also be accessed using result[0]
-        cursor.close()
+    cursor = g.conn.execute(sql)
+    for result in cursor:
+        results.append(result)
+        # names.append(result['r_name'])  # can also be accessed using result[0]
+    cursor.close()
     
     
 
     
     # return redirect('/search_restaurants')
-    return search_restaurants(names)
+    return search_restaurants(results)
     # return render_template("search_restaurants.html", **context)
 @app.route('/search_restaurants')
-def search_restaurants(names=None):
+def search_restaurants(results=None):
 
     username="guest"
     if session.get('logged_in'):
         username=session['u_name']
     
     # context = dict(username=username)
-    context = dict(data = names, username=username)
+    context = dict(data = results, username=username)
 
   #
   # render_template looks in the templates/ folder for files.
