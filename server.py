@@ -340,6 +340,45 @@ def show_restaurant_details():
     context = dict(data = restaurant, username=username, reviews=reviews)
 
     return render_template("show_restaurant_detail.html", **context)
+# write review
+
+@app.route('/write_review_act', methods=['POST'])
+def write_review_act():
+    restaurant={}
+    restaurant['rid']=request.args.get('rid')
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        # you cannot write a review without login
+        return redirect(url_for('show_restaurant_detail', rid=restaurant['rid']))
+    review={}
+    review['rating']=5 # TODO: get from html
+    review['plaintext']=request.form['review_text']
+    
+    review['date']=datetime.datetime.now().strftime("%Y-%m-%d")
+    for col in ['useful', 'funny', 'cool']:
+        review[col]=0
+    review['uid']=session['uid']
+    review['rid']=restaurant['rid']
+    print(review)
+    try:
+        review_id=None
+        cursor = g.conn.execute("SELECT COUNT(review_id) FROM restaurants")
+        for result in cursor:
+            review_id=int(result[0])+1
+        cursor.close()
+        review['review_id']=str(review_id)
+        print(review)
+        try:
+            g.conn.execute('INSERT INTO reviews(review_id, rating, plaintext, useful, funny, cool, date, uid, rid) VALUES (%(review_id)s, %(rating)s, %(plaintext)s, %(useful)s, %(funny)s, %(cool)s, %(date)s, %(uid)s, %(rid)s)', review)
+        except:
+            flash('error')
+    except:
+        flash('error')
+    return redirect(url_for('show_restaurant_detail', rid=restaurant['rid']))
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
 if __name__ == "__main__":
     import click
 
