@@ -331,23 +331,24 @@ def show_restaurant_details():
 
     # check bookmark status
     restaurant['is_bookmark']=None
-    try:
-        # print(reviews[i_review])
+    if session.get('logged_in'):
         sql="SELECT rid FROM bookmarks WHERE uid='"+session['uid']+"' AND rid='"+restaurant['rid']+"'"
         # print(sql)
-        cursor = g.conn.execute(sql)
-        # reviews[i_review]['is_friend']='-star-empty'
-        for result in cursor:
-            # print(result)
+        try:
+            
+            cursor = g.conn.execute(sql)
+            # reviews[i_review]['is_friend']='-star-empty'
+            for result in cursor:
+                # print(result)
 
-            # reviews[i_review]['is_friend']='-star'
-            restaurant['is_bookmark']=True
+                # reviews[i_review]['is_friend']='-star'
+                restaurant['is_bookmark']=True
 
-            # names.append(result['r_name'])  # can also be accessed using result[0]
-        cursor.close()
-        # print(reviews[i_review])
-    except:
-        flash('error in bookmark')
+                # names.append(result['r_name'])  # can also be accessed using result[0]
+            cursor.close()
+            # print(reviews[i_review])
+        except:
+            flash('error in bookmark')
 
     # reviews
     reviews=[]
@@ -448,21 +449,19 @@ def write_review_act():
 # add bookmark
 @app.route('/add_bookmark_act')
 def add_bookmark_act():
-    # print(request.form['review_text'])
-    info={}
-    info['rid']=request.args.get('rid')
-    info['uid']=request.args.get('uid')
-
     username="guest"
     if session.get('logged_in'):
         username=session['u_name']
     else:
         flash('you cannot add a bookmark without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
-    
+    info={}
+    info['rid']=request.args.get('rid')
+    info['uid']=session['uid']
+    # print(info)
     try:
-        g.conn.execute('INSERT INTO bookmark(uid, rid) VALUES (%(uid)s, %(rid)s)', info)
-        flash('add bookmark successfully')
+        g.conn.execute('INSERT INTO bookmarks(uid, rid) VALUES (%(uid)s, %(rid)s)', info)
+        flash('add a bookmark successfully')
     except:
         flash('error')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
