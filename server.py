@@ -343,19 +343,21 @@ def show_restaurant_details():
 
 @app.route('/write_review_act', methods=['POST'])
 def write_review_act():
-    print(request.form['review_text'])
+    # print(request.form['review_text'])
     restaurant={}
-    restaurant['rid']=request.args.get('rid')
+    # restaurant['rid']=request.args.get('rid')
+    restaurant['rid']=request.form['rid']
 
     username="guest"
     if session.get('logged_in'):
         username=session['u_name']
     else:
         # you cannot write a review without login
+        # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
         return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     review={}
     review['rating']=request.form['rating'] # TODO: get from html
-    print(review)
+    # print(review)
     review['plaintext']=request.form['review_text']
 
     review['date']=datetime.datetime.now().strftime("%Y-%m-%d")
@@ -363,7 +365,7 @@ def write_review_act():
         review[col]=0
     review['uid']=session['uid']
     review['rid']=restaurant['rid']
-    print(review)
+    # print(review)
     try:
         review_id=None
         cursor = g.conn.execute("SELECT COUNT(review_id) FROM reviews")
@@ -378,6 +380,7 @@ def write_review_act():
             flash('error')
     except:
         flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
 if __name__ == "__main__":

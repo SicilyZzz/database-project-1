@@ -70,6 +70,7 @@
 <p>Write a review:</p>
 <div class="form-group">
   <form action="/write_review_act" method="post">
+    <input type="hidden" value="{{rid}}" name="rid">
     <textarea class="form-control" rows="5" name="review_text"></textarea>
     <select name="rating">
       <option value="5" selected>5</option>
