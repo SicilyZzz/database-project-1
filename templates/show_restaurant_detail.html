@@ -119,11 +119,17 @@
       <td>{{n.u_name}}
         <button type="button" class="btn">
         <!-- TODO:  -->
+
+        <!-- <span class="glyphicon glyphicon{{n.is_friend}}" aria-hidden="true"></span> -->
         <!-- not friend -->
+        {% if not n.is_friend %}
         <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
         <!-- friend -->
+        {% else %}
         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-        </button> </td>
+        {% endif %}
+        </button>
+      </td>
       <td>{{n.rid}}</td>
     </tr>
     {% endfor %}
