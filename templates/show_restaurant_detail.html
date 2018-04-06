@@ -88,9 +88,15 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">rid</th>
-      <th scope="col">review_id</th>
+      <th scope="col">review_id</th> 
       <th scope="col">rating</th>
+      <th scope="col">plaintext</th>
+      <th scope="col">useful</th>
+      <th scope="col">funny</th>
+      <th scope="col">cool</th>
+      <th scope="col">date</th>
+      <th scope="col">uid</th>
+      <th scope="col">rid</th>
       <!-- <th scope="col">Handle</th> -->
     </tr>
   </thead>
@@ -98,9 +104,15 @@
     
     {% for n in reviews %}
     <tr>
-      <th scope="row">{{n.rid}}</th>
-      <td>{{n.review_id}}</td>
+      <th scope="row">{{n.review_id}}</th>
       <td>{{n.rating}}</td>
+      <td>{{n.plaintext}}</td>
+      <td>{{n.useful}}</td>
+      <td>{{n.funny}}</td>
+      <td>{{n.cool}}</td>
+      <td>{{n.date}}</td>
+      <td>{{n.uid}}</td>
+      <td>{{n.rid}}</td>
     </tr>
     {% endfor %}
   </tbody>
