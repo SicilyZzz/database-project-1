@@ -119,11 +119,12 @@
       <td>{{n.rating}}</td>
       <td>{{n.plaintext}}</td>
       <td>{{n.useful}}</td>
-      <td>{{n.funny}} <button type="button" class="btn">
-        <!-- TODO:  -->
+      <td>{{n.funny}}</td>
+      <td>{{n.cool}}
+        <a href="{{url_for('review_vote_act', vote_type='cool', rid=n.rid, review_id=n.review_id)}}">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </button> </td>
-      <td>{{n.cool}}</td>
+        </a>
+      </td>
       <td>{{n.date}}</td>
       <td>{{n.uid}}</td>
       <td>{{n.u_name}}

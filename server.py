@@ -447,6 +447,31 @@ def add_friend_act():
         flash('error')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
+
+# review useful, funny, cool
+@app.route('/review_vote_act')
+def review_vote_act():
+    # print(request.form['review_text'])
+    info={}
+    info['review_id']=request.args.get('review_id')
+    info['rid']=request.args.get('rid')
+    info['vote_type']=request.args.get('vote_type') # useful, funny, cool
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        flash('you cannot add a vote without login')
+        return redirect(url_for('show_restaurant_details', rid=info['rid']))
+    sql="UPDATE reviews SET "+info['vote_type']+"="+info['vote_type']+"+1 WHERE review_id='"+info['review_id']+"'"
+    print(sql)
+    try:
+        g.conn.execute(sql)
+        flash('you add a vote successfully')
+    except:
+        flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_restaurant_details', rid=info['rid']))
 @app.route('/del_friend_act')
 def del_friend_act():
     # print(request.form['review_text'])
@@ -459,6 +484,7 @@ def del_friend_act():
         username=session['u_name']
     else:
         # you cannot add a friend without login
+        flash('you cannot add a friend without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
     friend={}
     friend['uid_a']=session['uid']
@@ -472,8 +498,9 @@ def del_friend_act():
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
 # some TODOs
 # bookmarks
+
 # write tip
-# show user list
+# view friend lists
 
 if __name__ == "__main__":
     import click
