@@ -288,12 +288,15 @@ def search_restaurants_act():
                 sql=sql+"AND "+col+"="+sp+restaurants[col]+sp
             
     print(restaurants)
-    cursor = g.conn.execute(sql)
-    for result in cursor:
-        results.append(result)
-        # names.append(result['r_name'])  # can also be accessed using result[0]
-    cursor.close()
-
+    try:
+        cursor = g.conn.execute(sql)
+        for result in cursor:
+            results.append(result)
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error')
+        
     # return redirect('/search_restaurants')
     return search_restaurants(results)
     # return render_template("search_restaurants.html", **context)
@@ -314,12 +317,27 @@ def search_restaurants(results=None):
 def show_restaurant_details():
     restaurant={}
     restaurant['rid']=request.args.get('rid')
+
     username="guest"
     if session.get('logged_in'):
         username=session['u_name']
     
-    # context = dict(username=username)
-    context = dict(data = restaurant, username=username)
+    # SELECT with rid
+    # restaurants
+    # TODO: SELECT * FROM restaurants
+
+    # reviews
+    reviews=[]
+    try:
+        cursor = g.conn.execute('SELECT * FROM reviews WHERE rid=%(rid)s', restaurant)
+        for result in cursor:
+            reviews.append(result)
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error')
+    # print(reviews)
+    context = dict(data = restaurant, username=username, reviews=reviews)
 
     return render_template("show_restaurant_detail.html", **context)
 if __name__ == "__main__":

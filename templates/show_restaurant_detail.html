@@ -42,6 +42,7 @@
 
   {% if data != None %}
     <div>{{data}}</div>
+    <!-- show restaurant details -->
     <table class="table">
       <thead>
         <tr>
@@ -63,6 +64,28 @@
       </tbody>
     </table>
   {% endif %}
+
+<p>reviews</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">rid</th>
+      <th scope="col">review_id</th>
+      <th scope="col">rating</th>
+      <!-- <th scope="col">Handle</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for n in reviews %}
+    <tr>
+      <th scope="row">{{n.rid}}</th>
+      <td>{{n.review_id}}</td>
+      <td>{{n.rating}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 </body>
 
 
