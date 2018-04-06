@@ -1,5 +1,6 @@
 <html>
-<title>Search Restaurants</title>
+<title>Show restaurant details</title>
+<!-- also want this page to show reviews -->
 <head>
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -31,31 +32,13 @@
     {% endif %}
   </ul>
 
-  <h1>Search for restaurants</h1>
+  <h1>Show restaurant details</h1>
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
   
 
-<form class="navbar-form navbar-left" role="search" method="POST" action="/search_restaurants_act">
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Restaurant Name" name="r_name">
-  </div>
-  <select name="noiselevel">
-    <option value="Not Specified" selected>Noise Level (Not Specified)</option>
-    <option value="NULL">Null</option>
-    <option value="average">average</option>
-    <option value="quiet">quiet</option>
-    <option value="loud">loud</option>
-  </select>
 
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
-<br><br>
 <p>Results:</p>
-<!-- <form method="POST" action="/search_restaurants_act">
-  <p>Name<input type="text">
-  <input type="submit" value="Search"></p>
-</form> -->
 
   {% if data != None %}
     <div>{{data}}</div>
@@ -63,10 +46,9 @@
       <thead>
         <tr>
           <th scope="col">rid</th>
-          <th scope="col">name</th>
-          <th scope="col">noiselevel</th>
-
-          <th scope="col">details</th>
+          <!-- <th scope="col">name</th>
+          <th scope="col">noiselevel</th> -->
+          <!-- <th scope="col">Handle</th> -->
         </tr>
       </thead>
       <tbody>
@@ -74,9 +56,8 @@
         {% for n in data %}
         <tr>
           <th scope="row">{{n.rid}}</th>
-          <td>{{n.r_name}}</td>
-          <td>{{n.noiselevel}}</td>
-          <td><a href="{{url_for('show_restaurant_details', rid=n.rid)}}">details</a></td>
+          <!-- <td>{{n.r_name}}</td>
+          <td>{{n.noiselevel}}</td> -->
         </tr>
         {% endfor %}
       </tbody>

@@ -293,10 +293,7 @@ def search_restaurants_act():
         results.append(result)
         # names.append(result['r_name'])  # can also be accessed using result[0]
     cursor.close()
-    
-    
 
-    
     # return redirect('/search_restaurants')
     return search_restaurants(results)
     # return render_template("search_restaurants.html", **context)
@@ -310,12 +307,21 @@ def search_restaurants(results=None):
     # context = dict(username=username)
     context = dict(data = results, username=username)
 
-  #
-  # render_template looks in the templates/ folder for files.
-  # for example, the below file reads template/index.html
-  #
     return render_template("search_restaurants.html", **context)
+# show restaurant details
 
+@app.route('/show_restaurant_details')
+def show_restaurant_details():
+    restaurant={}
+    restaurant['rid']=request.args.get('rid')
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    
+    # context = dict(username=username)
+    context = dict(data = restaurant, username=username)
+
+    return render_template("show_restaurant_detail.html", **context)
 if __name__ == "__main__":
     import click
 
