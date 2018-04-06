@@ -315,7 +315,6 @@ def search_restaurants(results=None):
 
     return render_template("search_restaurants.html", **context)
 # show restaurant details
-
 @app.route('/show_restaurant_details')
 def show_restaurant_details():
     restaurant={}
@@ -329,6 +328,27 @@ def show_restaurant_details():
     # restaurants
     # TODO: SELECT * FROM restaurants
 
+
+    # check bookmark status
+    restaurant['is_bookmark']=None
+    try:
+        # print(reviews[i_review])
+        sql="SELECT rid FROM bookmarks WHERE uid='"+session['uid']+"' AND rid='"+restaurant['rid']+"'"
+        # print(sql)
+        cursor = g.conn.execute(sql)
+        # reviews[i_review]['is_friend']='-star-empty'
+        for result in cursor:
+            # print(result)
+
+            # reviews[i_review]['is_friend']='-star'
+            restaurant['is_bookmark']=True
+
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+        # print(reviews[i_review])
+    except:
+        flash('error in bookmark')
+
     # reviews
     reviews=[]
     try:
@@ -338,7 +358,9 @@ def show_restaurant_details():
             # names.append(result['r_name'])  # can also be accessed using result[0]
         cursor.close()
     except:
-        flash('error')
+        flash('error in reviews')
+    
+
     for i_review in range(len(reviews)):
         # print("get friends info")
         try:
@@ -355,7 +377,7 @@ def show_restaurant_details():
             # print(session.get('logged_in'))
             # print(reviews[i_review])
             if session.get('logged_in'):
-
+                # check friend status
                 try:
                     # print(reviews[i_review])
                     sql="SELECT uid_b FROM friends WHERE uid_a='"+session['uid']+"' AND uid_b='"+reviews[i_review]['uid']+"'"
@@ -423,6 +445,29 @@ def write_review_act():
     return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
 
+# add bookmark
+@app.route('/add_bookmark_act')
+def add_bookmark_act():
+    # print(request.form['review_text'])
+    info={}
+    info['rid']=request.args.get('rid')
+    info['uid']=request.args.get('uid')
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        flash('you cannot add a bookmark without login')
+        return redirect(url_for('show_restaurant_details', rid=info['rid']))
+    
+    try:
+        g.conn.execute('INSERT INTO bookmark(uid, rid) VALUES (%(uid)s, %(rid)s)', info)
+        flash('add bookmark successfully')
+    except:
+        flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_restaurant_details', rid=info['rid']))
+# delete bookmark (TODO)
 # friend
 @app.route('/add_friend_act')
 def add_friend_act():
@@ -436,6 +481,7 @@ def add_friend_act():
         username=session['u_name']
     else:
         # you cannot add a friend without login
+        flash('you cannot add a friend without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
     friend={}
     friend['uid_a']=session['uid']

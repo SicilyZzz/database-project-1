@@ -57,20 +57,29 @@
       <thead>
         <tr>
           <th scope="col">rid</th>
-          <!-- <th scope="col">name</th>
-          <th scope="col">noiselevel</th> -->
-          <!-- <th scope="col">Handle</th> -->
+          <!-- <th scope="col">name</th> -->
+          <!-- <th scope="col">noiselevel</th> -->
+          <th scope="col">bookmark</th>
         </tr>
       </thead>
       <tbody>
         
-        {% for n in data %}
+        
         <tr>
-          <th scope="row">{{n.rid}}</th>
-          <!-- <td>{{n.r_name}}</td>
-          <td>{{n.noiselevel}}</td> -->
+          <th scope="row">{{data.rid}}</th>
+          
+          <td>
+            {% if data.is_bookmark%}
+            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+            
+            {% else %}
+            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+            
+            {% endif %}
+          </td>
         </tr>
-        {% endfor %}
+                 
+          
       </tbody>
     </table>
   {% endif %}
@@ -108,7 +117,6 @@
       <th scope="col">uid</th>
       <th scope="col">username</th>
       <th scope="col">rid</th>
-      <!-- <th scope="col">Handle</th> -->
     </tr>
   </thead>
   <tbody>
@@ -137,16 +145,10 @@
       <td>{{n.uid}}</td>
       <td>{{n.u_name}}
         <button type="button" class="btn">
-        <!-- TODO:  -->
-        
-        <!-- <span class="glyphicon glyphicon{{n.is_friend}}" aria-hidden="true"></span> -->
         
         {% if n.is_friend %}
-        <!-- friend / delete friend -->
         <a href="{{url_for('del_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
-        
         {% else %}
-        <!-- not friend / add friend -->
         <a href="{{url_for('add_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
         
         {% endif %}
