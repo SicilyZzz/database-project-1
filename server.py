@@ -22,7 +22,7 @@ from flask import Flask, request, render_template, g, redirect, Response
 # other library:
 import datetime
 # import hashlib
-from flask import session
+from flask import session, flash, url_for
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -202,8 +202,7 @@ def login_act():
     return redirect('/')
 @app.route('/login_page')
 def login_page():
-    # abort(401)
-    # this_is_never_executed()
+    
     return render_template("login.html")
 # Logout
 @app.route('/logout_act', methods=['POST'])
@@ -337,13 +336,14 @@ def show_restaurant_details():
     except:
         flash('error')
     # print(reviews)
-    context = dict(data = restaurant, username=username, reviews=reviews)
+    context = dict(data = restaurant, username=username, reviews=reviews, rid=restaurant['rid'])
 
     return render_template("show_restaurant_detail.html", **context)
 # write review
 
 @app.route('/write_review_act', methods=['POST'])
 def write_review_act():
+    print(request.form['review_text'])
     restaurant={}
     restaurant['rid']=request.args.get('rid')
 
@@ -352,11 +352,12 @@ def write_review_act():
         username=session['u_name']
     else:
         # you cannot write a review without login
-        return redirect(url_for('show_restaurant_detail', rid=restaurant['rid']))
+        return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     review={}
-    review['rating']=5 # TODO: get from html
+    review['rating']=request.form['rating'] # TODO: get from html
+    print(review)
     review['plaintext']=request.form['review_text']
-    
+
     review['date']=datetime.datetime.now().strftime("%Y-%m-%d")
     for col in ['useful', 'funny', 'cool']:
         review[col]=0
@@ -365,7 +366,7 @@ def write_review_act():
     print(review)
     try:
         review_id=None
-        cursor = g.conn.execute("SELECT COUNT(review_id) FROM restaurants")
+        cursor = g.conn.execute("SELECT COUNT(review_id) FROM reviews")
         for result in cursor:
             review_id=int(result[0])+1
         cursor.close()
@@ -377,7 +378,7 @@ def write_review_act():
             flash('error')
     except:
         flash('error')
-    return redirect(url_for('show_restaurant_detail', rid=restaurant['rid']))
+    return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
 if __name__ == "__main__":
     import click
