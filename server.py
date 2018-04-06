@@ -339,8 +339,7 @@ def show_restaurant_details():
     context = dict(data = restaurant, username=username, reviews=reviews, rid=restaurant['rid'])
 
     return render_template("show_restaurant_detail.html", **context)
-# write review
-
+# write a review
 @app.route('/write_review_act', methods=['POST'])
 def write_review_act():
     # print(request.form['review_text'])
@@ -383,6 +382,11 @@ def write_review_act():
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+# some TODOs
+# bookmarks
+# write tip
+# show user list
+# friend
 if __name__ == "__main__":
     import click
 
