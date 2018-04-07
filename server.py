@@ -415,10 +415,11 @@ def write_review_act():
         username=session['u_name']
     else:
         # you cannot write a review without login
+        flash('you cannot write a review without login')
         # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
         return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     review={}
-    review['rating']=request.form['rating'] # TODO: get from html
+    review['rating']=request.form['rating']
     # print(review)
     review['plaintext']=request.form['review_text']
 
@@ -438,10 +439,57 @@ def write_review_act():
         print(review)
         try:
             g.conn.execute('INSERT INTO reviews(review_id, rating, plaintext, useful, funny, cool, date, uid, rid) VALUES (%(review_id)s, %(rating)s, %(plaintext)s, %(useful)s, %(funny)s, %(cool)s, %(date)s, %(uid)s, %(rid)s)', review)
+            flash('insert a review successfully')
         except:
             flash('error')
     except:
         flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+
+# write a tip
+@app.route('/write_tip_act', methods=['POST'])
+def write_tip_act():
+    # print(request.form['review_text'])
+    restaurant={}
+    # restaurant['rid']=request.args.get('rid')
+    restaurant['rid']=request.form['rid']
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        # you cannot write a review without login
+        flash('you cannot write a tip without login')
+        # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+        return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
+    tip={}
+    
+    # print(review)
+    tip['t_text']=request.form['t_text']
+
+    tip['t_date']=datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    tip['uid']=session['uid']
+    tip['rid']=restaurant['rid']
+    # print(review)
+    print(tip)
+    try:
+        tid=None
+        cursor = g.conn.execute("SELECT COUNT(tid) FROM tip_writes")
+        for result in cursor:
+            tid=int(result[0])+1
+        cursor.close()
+        tip['tid']=str(tid)
+        
+        try:
+            g.conn.execute('INSERT INTO tip_writes(tid, uid, rid, t_text,t_date) VALUES (%(tid)s, %(uid)s, %(rid)s, %(t_text)s, %(t_date)s)', tip)
+            flash('insert a tip successfully')
+        except:
+            flash('error in getting tid (tips id)')
+    except:
+        flash('error in get tid')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=restaurant['rid']))
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})

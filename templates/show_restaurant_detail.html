@@ -84,6 +84,21 @@
       </tbody>
     </table>
   {% endif %}
+
+{% if not session.logged_in %}
+<p>Login to write a tip</p>
+{% else %}
+<p>Write a tip:</p>
+<div class="form-group">
+  <form action="/write_tip_act" method="post">
+    <input type="hidden" value="{{rid}}" name="rid">
+    <input type="text" class="form-control" placeholder="write a tip"  name="t_text">
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+{% endif %}
+
 {% if not session.logged_in %}
 <p>Login to write a review</p>
 {% else %}
@@ -91,6 +106,7 @@
 <div class="form-group">
   <form action="/write_review_act" method="post">
     <input type="hidden" value="{{rid}}" name="rid">
+
     <textarea class="form-control" rows="5" name="review_text"></textarea>
     <div>rating:</div>
     <select name="rating">
