@@ -324,10 +324,17 @@ def show_restaurant_details():
     if session.get('logged_in'):
         username=session['u_name']
     
+    ###############
+    # restaurants #
+    ###############
+
     # SELECT with rid
     # restaurants
     # TODO: SELECT * FROM restaurants
 
+    ############
+    # bookmark #
+    ############
 
     # check bookmark status
     restaurant['is_bookmark']=None
@@ -349,8 +356,62 @@ def show_restaurant_details():
             # print(reviews[i_review])
         except:
             flash('error in bookmark')
+    ########
+    # tips #
+    ########
+    tips=[]
+    try:
+        cursor = g.conn.execute('SELECT * FROM tip_writes WHERE rid=%(rid)s', restaurant)
+        for result in cursor:
+            tips.append(dict(result))
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error in reviews')
+    
 
-    # reviews
+    for i_tip in range(len(tips)):
+        # print("get friends info")
+        try:
+            # print(reviews[i_review])
+            cursor = g.conn.execute('SELECT u_name FROM users WHERE uid=%(uid)s', tips[i_tip])
+            for result in cursor:
+                # print(result)
+                tips[i_tip]['u_name']=result['u_name']
+
+                # names.append(result['r_name'])  # can also be accessed using result[0]
+            cursor.close()
+            tips[i_tip]['is_friend']=None
+            
+            # print(session.get('logged_in'))
+            # print(reviews[i_review])
+            if session.get('logged_in'):
+                # check friend status
+                try:
+                    # print(reviews[i_review])
+                    sql="SELECT uid_b FROM friends WHERE uid_a='"+session['uid']+"' AND uid_b='"+tips[i_tip]['uid']+"'"
+                    # print(sql)
+                    cursor = g.conn.execute(sql)
+                    # reviews[i_review]['is_friend']='-star-empty'
+                    for result in cursor:
+                        # print(result)
+
+                        # reviews[i_review]['is_friend']='-star'
+                        tips[i_tip]['is_friend']=True
+
+                        # names.append(result['r_name'])  # can also be accessed using result[0]
+                    cursor.close()
+                    # print(reviews[i_review])
+                except:
+                    flash('error')
+        except:
+            flash('error')
+    # print(tips)
+    
+    ###########
+    # reviews #
+    ###########
+
     reviews=[]
     try:
         cursor = g.conn.execute('SELECT * FROM reviews WHERE rid=%(rid)s', restaurant)
@@ -399,7 +460,7 @@ def show_restaurant_details():
         except:
             flash('error')
     # print(reviews)
-    context = dict(data = restaurant, username=username, reviews=reviews, rid=restaurant['rid'])
+    context = dict(data = restaurant, username=username, reviews=reviews, tips=tips, rid=restaurant['rid'])
 
     return render_template("show_restaurant_detail.html", **context)
 # write a review

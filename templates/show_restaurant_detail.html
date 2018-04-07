@@ -99,6 +99,45 @@
 </div>
 {% endif %}
 
+<p>Tips:</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">tid</th> 
+      <th scope="col">uid</th>
+      <th scope="col">rid</th>
+      <th scope="col">username</th>
+      <th scope="col">t_text</th>      
+      <th scope="col">t_date</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for n in tips %}
+    <tr>
+      <th scope="row">{{n.tid}}</th>
+      <td>{{n.uid}}</td>
+      <td>{{n.u_name}}
+        <button type="button" class="btn">
+        
+        {% if n.is_friend %}
+        <a href="{{url_for('del_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+        {% else %}
+        <a href="{{url_for('add_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+        
+        {% endif %}
+        </button>
+        
+      </td>
+      <td>{{n.rid}}</td>
+      <td>{{n.t_text}}</td>
+      <td>{{n.t_date}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% if not session.logged_in %}
 <p>Login to write a review</p>
 {% else %}
@@ -120,6 +159,7 @@
   </form>
 </div>
 {% endif %}
+
 <p>Reviews:</p>
 <table class="table">
   <thead>
