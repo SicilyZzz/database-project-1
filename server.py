@@ -487,6 +487,31 @@ def del_bookmark_act():
         flash('error')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
+# review useful, funny, cool
+@app.route('/review_vote_act')
+def review_vote_act():
+    # print(request.form['review_text'])
+    info={}
+    info['review_id']=request.args.get('review_id')
+    info['rid']=request.args.get('rid')
+    info['vote_type']=request.args.get('vote_type') # useful, funny, cool
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        flash('you cannot add a vote without login')
+        return redirect(url_for('show_restaurant_details', rid=info['rid']))
+    sql="UPDATE reviews SET "+info['vote_type']+"="+info['vote_type']+"+1 WHERE review_id='"+info['review_id']+"'"
+    print(sql)
+    try:
+        g.conn.execute(sql)
+        flash('you add a vote successfully')
+    except:
+        flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_restaurant_details', rid=info['rid']))
+
 # friend
 @app.route('/add_friend_act')
 def add_friend_act():
@@ -513,30 +538,7 @@ def add_friend_act():
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
 
-# review useful, funny, cool
-@app.route('/review_vote_act')
-def review_vote_act():
-    # print(request.form['review_text'])
-    info={}
-    info['review_id']=request.args.get('review_id')
-    info['rid']=request.args.get('rid')
-    info['vote_type']=request.args.get('vote_type') # useful, funny, cool
 
-    username="guest"
-    if session.get('logged_in'):
-        username=session['u_name']
-    else:
-        flash('you cannot add a vote without login')
-        return redirect(url_for('show_restaurant_details', rid=info['rid']))
-    sql="UPDATE reviews SET "+info['vote_type']+"="+info['vote_type']+"+1 WHERE review_id='"+info['review_id']+"'"
-    print(sql)
-    try:
-        g.conn.execute(sql)
-        flash('you add a vote successfully')
-    except:
-        flash('error')
-    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
-    return redirect(url_for('show_restaurant_details', rid=info['rid']))
 @app.route('/del_friend_act')
 def del_friend_act():
     # print(request.form['review_text'])
@@ -561,10 +563,53 @@ def del_friend_act():
         flash('error')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
+
+# show friend list
+@app.route('/show_friend_list')
+def show_friend_list():
+    info={}
+    
+
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        flash('you should login to view friend list')
+        return redirect('login_page')
+
+
+    info['uid_a']=session['uid']
+
+    friends_uid=[]
+    try:
+        cursor = g.conn.execute('SELECT uid_b FROM friends WHERE uid_a=%(uid_a)s', info)
+        for result in cursor:
+            friends_uid.append(dict(result))
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error in select friends')
+    friends=[]
+    for fuid in friends_uid:
+        try:
+            cursor = g.conn.execute('SELECT u_name, uid FROM users WHERE uid=%(uid_b)s', fuid)
+            for result in cursor:
+                friends.append(dict(result))
+            cursor.close()
+        except:
+            flash('error in select user in friends')
+
+    
+
+    
+    # print(reviews)
+    context = dict(data = friends, username=username)
+
+    return render_template("show_friend_list.html", **context)
 # some TODOs
 
 # write tip
-# view friend lists
+
 
 if __name__ == "__main__":
     import click

@@ -1,5 +1,6 @@
 <html>
-<title>Register</title>
+<title>Show restaurant details</title>
+<!-- also want this page to show reviews -->
 <head>
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,17 +22,22 @@
 <body>
   <!-- Menu -->
   <ul class="nav nav-pills">
-    <li role="presentation"><a href="/">Home</a></li>
+    <li role="presentation" ><a href="/">Home</a></li>
     <li role="presentation"><a href="search_restaurants">Search Restaurants</a></li>
     {% if not session.logged_in %}
       <li role="presentation"><a href="login_page">Login</a></li>
-      <li role="presentation" class="active"><a href="register_page">Register</a></li>
+      <li role="presentation"><a href="register_page">Register</a></li>
     {% else %}
-      <li role="presentation"><a href="show_friend_list">Friends</a></li>
+      <li role="presentation" class="active"><a href="show_friend_list">Friends</a></li>
       <li role="presentation"><a href="logout_act">Logout</a></li>
     {% endif %}
   </ul>
-  <h1>Register</h1>
+
+  <h1>Show friend list</h1>
+  <!-- Greetings -->
+  <p>Hello <span id="username">{{ username }}</span></p>
+
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -43,14 +49,37 @@
 {% endwith %}
 
 
-<form method="POST" action="/register_act">
-<p>Name: <input type="text" name="u_name"></p>
-<p>Account: <input type="text" name="account"></p>
-<p>Password: <input type="password" name="password"></p>
-<p>Password confirmation: <input type="password" name="conf_pw"></p>
-<p><input type="submit" value="register" class="btn btn-primary"></p>
-</form>
+<p>Results:</p>
 
+  {% if data != None %}
+    <div>{{data}}</div>
+    <!-- show restaurant details -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">uid</th>
+          <th scope="col">name</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for n in data %}
+        <tr>
+          <th scope="row">{{n.uid}}</th>
+          
+          <td>{{n.u_name}}</td>
+        </tr>
+        {% endfor %}
+                 
+          
+      </tbody>
+    </table>
+  {% endif %}
+
+</table>
+
+
+<!-- <span style="bottom:0; right:0;"><a href="http://glyphicons.com/">Glyphicons</a></span> -->
 </body>
 
 
