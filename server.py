@@ -137,6 +137,67 @@ def index(latitude=40.8075355,longitude=-73.9647667):
         cursor.close()
     except:
         flash('get 10 random error')
+    
+    
+
+    # print(location_recoms)
+    #
+    # Flask uses Jinja templates, which is an extension to HTML where you can
+    # pass data to a template and dynamically generate HTML based on the data
+    # (you can think of it as simple PHP)
+    # documentation: https://realpython.com/blog/python/primer-on-jinja-templating/
+    #
+    # You can see an example template in templates/index.html
+    #
+    # context are the variables that are passed to the template.
+    # for example, "data" key in the context variable defined below will be 
+    # accessible as a variable in index.html:
+    #
+    #     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
+    #     <div>{{data}}</div>
+    #     
+    #     # creates a <div> tag for each element in data
+    #     # will print: 
+    #     #
+    #     #   <div>grace hopper</div>
+    #     #   <div>alan turing</div>
+    #     #   <div>ada lovelace</div>
+    #     #
+    #     {% for n in data %}
+    #     <div>{{n}}</div>
+    #     {% endfor %}
+    #
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    
+    context = dict(data = recoms, username=username)
+
+
+    #
+    # render_template looks in the templates/ folder for files.
+    # for example, the below file reads template/index.html
+    #
+    return render_template("index.html", **context)
+
+#
+# This is an example of a different path.  You can see it at:
+# 
+#     localhost:8111/another
+#
+# Notice that the function name is another() rather than index()
+# The functions for each app.route need to have different names
+#
+@app.route('/get_cur_location_recommend_act', methods=['POST'])
+def get_cur_location_recommend_act():
+    user={}
+    latitude = request.form['latitude']
+    longitude = request.form['longitude'] 
+    return show_location_recommend(latitude, longitude)
+
+
+@app.route('/show_location_recommend')
+def show_location_recommend(latitude=40.8075355,longitude=-73.9647667):
     # based on location latitude, longitude
     location_recoms = []
     location={}
@@ -179,64 +240,11 @@ def index(latitude=40.8075355,longitude=-73.9647667):
         except:
             pass
             # flash('error in restaurants (loaction recommend)')
-    
-
-    # print(location_recoms)
-    #
-    # Flask uses Jinja templates, which is an extension to HTML where you can
-    # pass data to a template and dynamically generate HTML based on the data
-    # (you can think of it as simple PHP)
-    # documentation: https://realpython.com/blog/python/primer-on-jinja-templating/
-    #
-    # You can see an example template in templates/index.html
-    #
-    # context are the variables that are passed to the template.
-    # for example, "data" key in the context variable defined below will be 
-    # accessible as a variable in index.html:
-    #
-    #     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
-    #     <div>{{data}}</div>
-    #     
-    #     # creates a <div> tag for each element in data
-    #     # will print: 
-    #     #
-    #     #   <div>grace hopper</div>
-    #     #   <div>alan turing</div>
-    #     #   <div>ada lovelace</div>
-    #     #
-    #     {% for n in data %}
-    #     <div>{{n}}</div>
-    #     {% endfor %}
-    #
     username="guest"
     if session.get('logged_in'):
         username=session['u_name']
-    
-    context = dict(data = recoms, username=username, location_recoms=location_recoms)
-
-
-    #
-    # render_template looks in the templates/ folder for files.
-    # for example, the below file reads template/index.html
-    #
-    return render_template("index.html", **context)
-
-#
-# This is an example of a different path.  You can see it at:
-# 
-#     localhost:8111/another
-#
-# Notice that the function name is another() rather than index()
-# The functions for each app.route need to have different names
-#
-@app.route('/get_cur_location_recommend_act', methods=['POST'])
-def get_cur_location_recommend_act():
-    user={}
-    latitude = request.form['latitude']
-    longitude = request.form['longitude'] 
-    return index(latitude, longitude)
-
-
+    context = dict(username=username, location_recoms=location_recoms)
+    return render_template("show_location_recommend.html", **context)
 # Login
 @app.route('/login_act', methods=['POST'])
 def login_act():
