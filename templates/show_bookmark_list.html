@@ -60,6 +60,7 @@
         <tr>
           <th scope="col">rid</th>
           <th scope="col">name</th>
+          <th scope="col">details</th>
         </tr>
       </thead>
       <tbody>
@@ -69,6 +70,11 @@
           <th scope="row">{{n.rid}}</th>
           
           <td>{{n.r_name}}</td>
+          <td>
+            <a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </a>
+          </td>
         </tr>
         {% endfor %}
                  
