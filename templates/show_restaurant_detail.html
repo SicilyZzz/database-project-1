@@ -147,6 +147,32 @@
     {% if data.checkin != None %}
     <div>Peak Hours</div>
     {{data.checkin}}
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Monday</th>
+          <th scope="col">Tuesday</th>
+          <th scope="col">Wednesday</th>
+          <th scope="col">Thursday</th>
+          <th scope="col">Friday</th>
+          <th scope="col">Saturday</th>
+          <th scope="col">Sunday</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>{{data.checkin.Monday}}</td>
+          <td>{{data.checkin.Tuesday}}</td>
+          <td>{{data.checkin.Wednesday}}</td>
+          <td>{{data.checkin.Thursday}}</td>
+          <td>{{data.checkin.Friday}}</td>
+          <td>{{data.checkin.Saturday}}</td>
+          <td>{{data.checkin.Sunday}}</td>
+        </tr>
+        
+      </tbody>
+    </table>
     {% endif %}
 
     
