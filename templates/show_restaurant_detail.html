@@ -178,10 +178,11 @@
     {% if data.has_photo != None %}
     
     {% for n in data.has_photo %}
+    <div>{{n.pid}}</div>
     <div class="media">
       <div class="media-left">
         <a href="#">
-          <img class="media-object" src="../../photos/url_for({{n.pid}}).jpg" alt="image error">
+          <img class="media-object" src="{{n.path}}" alt="image error">
         </a>
       </div>
       <div class="media-body">

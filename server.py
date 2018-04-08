@@ -25,8 +25,10 @@ import datetime
 from flask import session, flash, url_for
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-app = Flask(__name__, template_folder=tmpl_dir)
+YELP_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'photos')
 
+app = Flask(__name__, template_folder=tmpl_dir)
+app.config['UPLOAD_FOLDER'] = YELP_FOLDER
 
 #
 # The following is a dummy URI that does not connect to a valid database. You will need to modify it to connect to your Part 2 database in order to use the data.
@@ -359,10 +361,11 @@ def show_restaurant_details():
         for result in cursor:
             print(result)
             restaurant['has_photo'].append(dict(result))
+            restaurant['has_photo'][-1]['path']=os.path.join(app.config['UPLOAD_FOLDER'], result['pid']+".jpg")
         cursor.close()
     except:
         flash('error in restaurants (photo)')
-
+    print(restaurant['has_photo'])
     if len(restaurant['has_photo'])==0:
         restaurant['has_photo']=None
 
