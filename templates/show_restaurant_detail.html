@@ -52,7 +52,7 @@
 <p>Results:</p>
 
   {% if data != None %}
-    <div>{{data}}</div>
+    
     <!-- show restaurant details -->
     <table class="table table-hover">
       <thead>
@@ -98,15 +98,36 @@
         </tr>
       </tbody>
     </table>
+
     {% if data.categories != None %}
     <div>Categories:
       {% for n in data.categories %}
       <span class="label label-primary">{{n}}</span>
       {% endfor %}
     </div>
-
-    
     {% endif %}
+
+    <div>Location</div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">postal code</th>
+          <th scope="col">address</th>
+          <!-- <th scope="col">lot</th>
+          <th scope="col">valet</th> -->
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{data.postal_code}}</td>
+          <td>{{data.address}}</td>
+          <!-- <td>{{data.lot}}</td>
+          <td>{{data.valet}}</td> -->
+        </tr>
+      </tbody>
+    </table>
+    
     <div>Parking</div>
     <table class="table table-hover">
       <thead>
@@ -178,6 +199,7 @@
       </tbody>
     </table>
 
+  <div>{{data}}</div>
   {% endif %}
 
 {% if not session.logged_in %}

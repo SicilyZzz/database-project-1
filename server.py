@@ -352,7 +352,16 @@ def show_restaurant_details():
     ############################
     # restaurants (location)   #
     ############################
-
+    try:
+        cursor = g.conn.execute('SELECT * FROM open_location WHERE rid=%(rid)s', restaurant)
+        restaurant['address']=None
+        restaurant['postal_code']=None
+        for result in cursor:
+            restaurant['address']=result['address']
+            restaurant['postal_code']=result['postal_code']
+        cursor.close()
+    except:
+        flash('error in restaurants (open_location)')
     ############################
     # restaurants (hours)      #
     ############################
