@@ -328,6 +328,15 @@ def show_restaurant_details():
     # restaurants #
     ###############
 
+    try:
+        cursor = g.conn.execute('SELECT * FROM restaurants WHERE rid=%(rid)s', restaurant)
+        for result in cursor:
+            restaurant=dict(result)
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error in restaurants')
+
     # SELECT with rid
     # restaurants
     # TODO: SELECT * FROM restaurants

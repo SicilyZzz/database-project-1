@@ -58,8 +58,16 @@
       <thead>
         <tr>
           <th scope="col">rid</th>
-          <!-- <th scope="col">name</th> -->
-          <!-- <th scope="col">noiselevel</th> -->
+          <th scope="col">name</th>
+          <th scope="col">noiselevel</th>
+          <th scope="col">smoking</th>
+          <th scope="col">dogs allow?</th>
+          <th scope="col">has TV?</th>
+          <th scope="col">accept credit card?</th>
+          <th scope="col">good for kids?</th>
+          <th scope="col">alcohol</th>
+          <th scope="col">wifi</th>
+          <th scope="col">stars</th>
           <th scope="col">bookmark</th>
         </tr>
       </thead>
@@ -68,7 +76,16 @@
         
         <tr>
           <th scope="row">{{data.rid}}</th>
-          
+          <td>{{data.r_name}}</td>
+          <td>{{data.noiselevel}}</td>
+          <td>{{data.dogsallowed}}</td>
+          <td>{{data.hastv}}</td>
+          <td>{{data.smoking}}</td>
+          <td>{{data.accepts_credit_cards}}</td>
+          <td>{{data.goodforkids}}</td>
+          <td>{{data.alcohol}}</td>
+          <td>{{data.wifi}}</td>
+          <td>{{data.stars}}</td>
           <td>
             {% if data.is_bookmark%}
             <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
