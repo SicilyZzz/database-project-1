@@ -423,7 +423,7 @@ def show_restaurant_details():
         for result in cursor:
             # print(result)
             restaurant['checkin'][result['weekday']]={}
-            restaurant['checkin'][result['weekday']][str(result['hour'].strftime('%H'))]=result['counts']
+            restaurant['checkin'][result['weekday']][str(int(str(result['hour'].strftime('%H'))))]=result['counts']
             # print(type(result['hour'].strftime('%H:%M')))
             # print(result['hour'].strftime('%H:%M'))
         cursor.close()
@@ -434,10 +434,11 @@ def show_restaurant_details():
         if weekday not in restaurant['checkin']:
             restaurant['checkin'][weekday]={}
         for h in range(24):
-            h_s=str('{:02d}'.format(int(h)))
+            h_s=str(h) #str('{:02d}'.format(int(h)))
             if h_s not in restaurant['checkin'][weekday]:
                 restaurant['checkin'][weekday][h_s]=0
-    print(restaurant['checkin'])
+    # print(restaurant['checkin'])
+    
     ##########################
     # change None to unknown #
     ##########################

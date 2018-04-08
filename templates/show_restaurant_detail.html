@@ -144,6 +144,9 @@
     </table>
     {% endif %}
     
+
+
+
     {% if data.checkin != None %}
     <div>Peak Hours</div>
     {{data.checkin}}
@@ -160,7 +163,7 @@
         </tr>
       </thead>
       <tbody>
-        
+        {% for x in range(24) %}
         <tr>
           <td>{{data.checkin.Monday}}</td>
           <td>{{data.checkin.Tuesday}}</td>
@@ -170,6 +173,7 @@
           <td>{{data.checkin.Saturday}}</td>
           <td>{{data.checkin.Sunday}}</td>
         </tr>
+        {% endfor %}
         
       </tbody>
     </table>
