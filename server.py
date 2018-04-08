@@ -362,6 +362,16 @@ def show_restaurant_details():
         cursor.close()
     except:
         flash('error in restaurants (open_location)')
+
+    try:
+        cursor = g.conn.execute('SELECT * FROM location WHERE address=%(address)s AND postal_code=%(postal_code)s', restaurant)
+        restaurant['latitude'], restaurant['longitude'], restaurant['city'], restaurant['state']=None, None, None, None
+        
+        for result in cursor:
+            restaurant['latitude'], restaurant['longitude'], restaurant['city'], restaurant['state']=result['latitude'], result['longitude'], result['city'], result['state']
+        cursor.close()
+    except:
+        flash('error in restaurants (location)')
     ############################
     # restaurants (hours)      #
     ############################
