@@ -106,6 +106,7 @@
       {% endfor %}
     </div>
     {% endif %}
+
     {% if data.open_hours != None %}
     <div>Open Hours</div>
     <table class="table table-hover">
@@ -142,7 +143,10 @@
       </tbody>
     </table>
     {% endif %}
-
+    
+    {% if data.checkin != None %}
+    {% endif %}
+    
     <div>Location</div>
     <table class="table table-hover">
       <thead>
@@ -239,7 +243,7 @@
       </tbody>
     </table>
 
-  <div>{{data}}</div>
+  <!-- <div>{{data}}</div> -->
   {% endif %}
 
 {% if not session.logged_in %}

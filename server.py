@@ -377,7 +377,7 @@ def show_restaurant_details():
     except:
         flash('error in restaurants (location)')
     ############################
-    # restaurants (hours)      #
+    # restaurants (open hours) #
     ############################
     try:
         cursor = g.conn.execute('SELECT * FROM open_hours WHERE rid=%(rid)s', restaurant)
@@ -396,7 +396,35 @@ def show_restaurant_details():
             restaurant['open_hours'][weekday]['open']="x"
             restaurant['open_hours'][weekday]['close']="x"
     
-    # change None to unknown
+    ############################################
+    # restaurants (check in/ show peak hours)  #
+    ############################################
+    try:
+        cursor = g.conn.execute('SELECT * FROM checkin WHERE rid=%(rid)s', restaurant)
+        restaurant['checkin']={}
+        for result in cursor:
+            # print(result)
+            restaurant['checkin'][result['weekday']]={}
+            restaurant['checkin'][result['weekday']][str(result['hour'].strftime('%H'))]=result['counts']
+            # print(type(result['hour'].strftime('%H:%M')))
+            # print(result['hour'].strftime('%H:%M'))
+        cursor.close()
+    except:
+        flash('error in restaurants (checkin)')
+
+    for weekday in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
+        if weekday not in restaurant['checkin']:
+            restaurant['checkin'][weekday]={}
+            for h in range(24):
+                
+                h_s=str('{:02d}'.format(int(h)))
+                if h_s not in restaurant['checkin'][weekday]:
+                    restaurant['checkin'][weekday][h_s]=0
+    
+    ##########################
+    # change None to unknown #
+    ##########################
+
     for k in restaurant.keys():
         if restaurant[k] is None:
             restaurant[k]="Unknown"
