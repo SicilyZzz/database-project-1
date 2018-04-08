@@ -28,13 +28,13 @@
       <li role="presentation"><a href="login_page">Login</a></li>
       <li role="presentation"><a href="register_page">Register</a></li>
     {% else %}
-      <li role="presentation" class="active"><a href="show_friend_list">Friends</a></li>
-      <li role="presentation"><a href="show_bookmark_list">Bookmarks</a></li>
+      <li role="presentation" ><a href="show_friend_list">Friends</a></li>
+      <li role="presentation" class="active"><a href="show_bookmark_list">Bookmarks</a></li>
       <li role="presentation"><a href="logout_act">Logout</a></li>
     {% endif %}
   </ul>
 
-  <h1>Show friend list</h1>
+  <h1>Show bookmark list</h1>
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
 
@@ -59,7 +59,7 @@
       <thead>
         <tr>
           <th scope="col">uid</th>
-          <th scope="col">name</th>
+          <th scope="col">rid</th>
         </tr>
       </thead>
       <tbody>
@@ -68,7 +68,7 @@
         <tr>
           <th scope="row">{{n.uid}}</th>
           
-          <td>{{n.u_name}}</td>
+          <td>{{n.rid}}</td>
         </tr>
         {% endfor %}
                  

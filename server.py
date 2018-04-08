@@ -470,7 +470,7 @@ def show_restaurant_details():
     ############
 
     # check bookmark status
-    restaurant['is_bookmark']=None
+    restaurant['is_bookmark']=False
     if session.get('logged_in'):
         sql="SELECT rid FROM bookmarks WHERE uid='"+session['uid']+"' AND rid='"+restaurant['rid']+"'"
         # print(sql)
@@ -489,6 +489,7 @@ def show_restaurant_details():
             # print(reviews[i_review])
         except:
             flash('error in bookmark')
+    # print(restaurant['is_bookmark'])
 
     ########
     # tips #
@@ -693,41 +694,43 @@ def write_tip_act():
 @app.route('/add_bookmark_act')
 def add_bookmark_act():
     username="guest"
+    info={}
+    info['rid']=request.args.get('rid')
+
     if session.get('logged_in'):
         username=session['u_name']
     else:
         flash('you cannot add a bookmark without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
-    info={}
-    info['rid']=request.args.get('rid')
     info['uid']=session['uid']
-    # print(info)
+    print(info)
     try:
         g.conn.execute('INSERT INTO bookmarks(uid, rid) VALUES (%(uid)s, %(rid)s)', info)
         flash('add a bookmark successfully')
     except:
-        flash('error')
+        flash('error in add bookmark')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
 # delete bookmark
-# add bookmark
+
 @app.route('/del_bookmark_act')
 def del_bookmark_act():
     username="guest"
+    info={}
+    info['rid']=request.args.get('rid')
     if session.get('logged_in'):
         username=session['u_name']
     else:
         flash('you cannot delete a bookmark without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
-    info={}
-    info['rid']=request.args.get('rid')
+    
     info['uid']=session['uid']
     # print(info)
     try:
         g.conn.execute('DELETE FROM bookmarks WHERE uid=%(uid)s AND rid=%(rid)s)', info)
         flash('delete a bookmark successfully')
     except:
-        flash('error')
+        flash('error in delete bookmark')
     # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
 # review useful, funny, cool
@@ -849,9 +852,52 @@ def show_friend_list():
     context = dict(data = friends, username=username)
 
     return render_template("show_friend_list.html", **context)
-# some TODOs
 
-# write tip
+# show bookmark list
+@app.route('/show_bookmark_list')
+def show_bookmark_list():
+    # info={}
+    
+
+    # username="guest"
+    # if session.get('logged_in'):
+    #     username=session['u_name']
+    # else:
+    #     flash('you should login to view bookmark list')
+    #     return redirect('login_page')
+
+
+    # info['uid']=session['uid']
+
+    # bookmarks=[]
+    # try:
+    #     cursor = g.conn.execute('SELECT rid FROM bookmarks WHERE uid=%(uid)s', info)
+    #     for result in cursor:
+    #         bookmark={}
+    #         bookmark['rid']=str(result['rid'])
+    #         bookmarks.append(bookmark)
+    #         # names.append(result['r_name'])  # can also be accessed using result[0]
+    #     cursor.close()
+    # except:
+    #     flash('error in select friends')
+    
+    # for bookmark_i in range(len(bookmarks)):
+    #     try:
+    #         cursor = g.conn.execute('SELECT r_name FROM restaurants WHERE rid=%(rid)s', bookmark[bookmark_i])
+    #         for result in cursor:
+    #             re
+    #         cursor.close()
+    #     except:
+    #         flash('error in select user in friends')
+
+    
+
+    
+    # # print(reviews)
+    # context = dict(data = friends, username=username)
+    return render_template("show_bookmark_list.html")
+    # return render_template("show_bookmark_list.html", **context)
+# some TODOs
 
 
 if __name__ == "__main__":
