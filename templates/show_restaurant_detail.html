@@ -207,7 +207,7 @@
   {% endif %}
 
 {% if not session.logged_in %}
-<p>Login to write a tip</p>
+<h3><span class="label label-danger">Login to write a tip</span></h3>
 {% else %}
 <p>Write a tip:</p>
 <div class="form-group">
@@ -260,7 +260,7 @@
 </table>
 
 {% if not session.logged_in %}
-<p>Login to write a review</p>
+<h3><span class="label label-danger">Login to write a review</span></h3>
 {% else %}
 <p>Write a review:</p>
 <div class="form-group">
