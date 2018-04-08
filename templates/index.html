@@ -47,6 +47,7 @@
     </ul>
   {% endif %}
 {% endwith %}
+
   <h1>10 random recommended restaurants</h1>
   <table class="table table-hover">
       <thead>
@@ -72,7 +73,48 @@
       </tbody>
   </table>
   
-  
+
+  <form method="POST" action="/get_cur_location_recommend_act">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" name="latitude" placeholder="latitude" value="40.8075355">
+          <input type="text" class="form-control" name="longitude" placeholder="longitude" value="-73.9651316">
+          <span class="input-group-btn">
+            <input type="submit" value="submit" class="btn btn-primary">
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div>
+    
+    <h1>recommended restaurants based on location</h1>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">rid</th>
+            <th scope="col">name</th>
+            <th scope="col">details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for n in location_recoms %}
+          {% if n.r_name %}
+          <tr>
+            <th scope="row">{{n.rid}}</th>
+            
+            <td>{{n.r_name}}</td>
+            <td>
+              <a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </a>
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+    </table>
+  </form>
+    
 
 
 <span style="bottom:0; right:0;"><a href="http://glyphicons.com/">Glyphicons</a></span>

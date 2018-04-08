@@ -104,7 +104,7 @@ def teardown_request(exception):
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 #
 @app.route('/')
-def index():
+def index(latitude=40.8075355,longitude=-73.9647667):
     """
     request is a special object that Flask provides to access web request information:
 
@@ -122,16 +122,66 @@ def index():
     #
     # example of a database query
     #
-    cursor = g.conn.execute("SELECT rid, r_name FROM restaurants ORDER BY RANDOM() LIMIT 10")
+
+    # 10 random
     recoms = []
 
-    for result in cursor:
-        recom={}
-        recom['rid']=result['rid']
-        recom['r_name']=result['r_name']
-        recoms.append(recom)  # can also be accessed using result[0]
-    cursor.close()
+    try:
+        cursor = g.conn.execute("SELECT rid, r_name FROM restaurants ORDER BY RANDOM() LIMIT 10")
+        
+        for result in cursor:
+            recom={}
+            recom['rid']=result['rid']
+            recom['r_name']=result['r_name']
+            recoms.append(recom)  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('get 10 random error')
+    # based on location latitude, longitude
+    location_recoms = []
+    location={}
+    location['latitude']=latitude
+    location['longitude']=longitude
+    try:
+        cursor = g.conn.execute("SELECT * FROM location WHERE %(latitude)s-5<latitude AND latitude<%(latitude)s+5 AND %(longitude)s-0.5<longitude AND longitude<%(longitude)s+0.5", location)
+        
+        for result in cursor:
+            recom=dict(result)
+            if recom['postal_code'] and recom['city'] and recom['state'] and recom['address']:
+                try:
+                    recom['postal_code'], recom['city'], recom['state'], recom['address']=str(recom['postal_code']), str(recom['city']), str(recom['state']), str(recom['address'])
+                    location_recoms.append(recom)  # can also be accessed using result[0]
+                except:
+                    pass
+        cursor.close()
+    except:
+        flash('get location error')
+    # print(location_recoms)
+    # print("open_location")
+    for loc_rec_i in range(len(location_recoms)):
 
+        try:
+            cursor = g.conn.execute("SELECT * FROM open_location WHERE address=%(address)s AND postal_code=%(postal_code)s", location_recoms[loc_rec_i])
+            
+            for result in cursor:
+                location_recoms[loc_rec_i]['rid']=str(result['rid'])
+            cursor.close()
+        except:
+            flash('get open_location error')
+    # print(location_recoms)
+    for loc_rec_i in range(len(location_recoms)):
+        try:
+            cursor = g.conn.execute('SELECT r_name FROM restaurants WHERE rid=%(rid)s', location_recoms[loc_rec_i])
+            for result in cursor:
+                location_recoms[loc_rec_i]['r_name']=str(result['r_name'])
+                # names.append(result['r_name'])  # can also be accessed using result[0]
+            cursor.close()
+        except:
+            pass
+            # flash('error in restaurants (loaction recommend)')
+    
+
+    # print(location_recoms)
     #
     # Flask uses Jinja templates, which is an extension to HTML where you can
     # pass data to a template and dynamically generate HTML based on the data
@@ -162,7 +212,7 @@ def index():
     if session.get('logged_in'):
         username=session['u_name']
     
-    context = dict(data = recoms, username=username)
+    context = dict(data = recoms, username=username, location_recoms=location_recoms)
 
 
     #
@@ -179,17 +229,13 @@ def index():
 # Notice that the function name is another() rather than index()
 # The functions for each app.route need to have different names
 #
-@app.route('/another')
-def another():
-    return render_template("another.html")
+@app.route('/get_cur_location_recommend_act', methods=['POST'])
+def get_cur_location_recommend_act():
+    user={}
+    latitude = request.form['latitude']
+    longitude = request.form['longitude'] 
+    return index(latitude, longitude)
 
-
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-    name = request.form['name']
-    #g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
-    return redirect('/')
 
 # Login
 @app.route('/login_act', methods=['POST'])
