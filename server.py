@@ -362,7 +362,7 @@ def show_restaurant_details():
         for result in cursor:
             print(result)
             restaurant['has_photo'].append(dict(result))
-            restaurant['has_photo'][-1]['path']="/static/"+str(result['pid'])+".jpg"
+            restaurant['has_photo'][-1]['path']="/static/photos/"+str(result['pid'])+".jpg"
             # restaurant['has_photo'][-1]['path']=str(os.path.join(app.config['UPLOAD_FOLDER'], result['pid']+".jpg"))
         cursor.close()
     except:
