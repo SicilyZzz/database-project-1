@@ -106,6 +106,42 @@
       {% endfor %}
     </div>
     {% endif %}
+    {% if data.open_hours != None %}
+    <div>Open Hours</div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Monday</th>
+          <th scope="col">Tuesday</th>
+          <th scope="col">Wednesday</th>
+          <th scope="col">Thursday</th>
+          <th scope="col">Friday</th>
+          <th scope="col">Saturday</th>
+          <th scope="col">Sunday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{data.open_hours.Monday.open}}</td>
+          <td>{{data.open_hours.Tuesday.open}}</td>
+          <td>{{data.open_hours.Wednesday.open}}</td>
+          <td>{{data.open_hours.Thursday.open}}</td>
+          <td>{{data.open_hours.Friday.open}}</td>
+          <td>{{data.open_hours.Saturday.open}}</td>
+          <td>{{data.open_hours.Sunday.open}}</td>
+        </tr>
+        <tr>
+          <td>{{data.open_hours.Monday.close}}</td>
+          <td>{{data.open_hours.Tuesday.close}}</td>
+          <td>{{data.open_hours.Wednesday.close}}</td>
+          <td>{{data.open_hours.Thursday.close}}</td>
+          <td>{{data.open_hours.Friday.close}}</td>
+          <td>{{data.open_hours.Saturday.close}}</td>
+          <td>{{data.open_hours.Sunday.close}}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% endif %}
 
     <div>Location</div>
     <table class="table table-hover">

@@ -349,6 +349,10 @@ def show_restaurant_details():
         cursor.close()
     except:
         flash('error in restaurants (categories)')
+    #########
+    # photo #
+    #########
+
     ############################
     # restaurants (location)   #
     ############################
@@ -375,7 +379,23 @@ def show_restaurant_details():
     ############################
     # restaurants (hours)      #
     ############################
-
+    try:
+        cursor = g.conn.execute('SELECT * FROM open_hours WHERE rid=%(rid)s', restaurant)
+        restaurant['open_hours']={}
+        for result in cursor:
+            # print(result)
+            restaurant['open_hours'][result['day']]={}
+            restaurant['open_hours'][result['day']]['open']=result['open'].strftime('%H:%M')
+            restaurant['open_hours'][result['day']]['close']=result['close'].strftime('%H:%M')
+        cursor.close()
+    except:
+        flash('error in restaurants (open_hours)')
+    for weekday in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
+        if weekday not in restaurant['open_hours']:
+            restaurant['open_hours'][weekday]={}
+            restaurant['open_hours'][weekday]['open']="x"
+            restaurant['open_hours'][weekday]['close']="x"
+    
     # change None to unknown
     for k in restaurant.keys():
         if restaurant[k] is None:
@@ -409,6 +429,7 @@ def show_restaurant_details():
             # print(reviews[i_review])
         except:
             flash('error in bookmark')
+
     ########
     # tips #
     ########
