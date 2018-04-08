@@ -191,9 +191,13 @@ def index(latitude=40.8075355,longitude=-73.9647667):
 @app.route('/get_cur_location_recommend_act', methods=['POST'])
 def get_cur_location_recommend_act():
     user={}
-    latitude = request.form['latitude']
-    longitude = request.form['longitude'] 
-    return show_location_recommend(latitude, longitude)
+    try:
+        latitude = float(request.form['latitude'])
+        longitude = float(request.form['longitude'])
+        return show_location_recommend(latitude, longitude)
+    except:
+        flash('wrong latitude or longitude')
+        return show_location_recommend()
 
 
 @app.route('/show_location_recommend')
@@ -204,42 +208,20 @@ def show_location_recommend(latitude=40.8075355,longitude=-73.9647667):
     location['latitude']=latitude
     location['longitude']=longitude
     try:
-        cursor = g.conn.execute("SELECT * FROM location WHERE %(latitude)s-5<latitude AND latitude<%(latitude)s+5 AND %(longitude)s-0.5<longitude AND longitude<%(longitude)s+0.5", location)
+        cursor = g.conn.execute("SELECT * FROM restaurants R, location L, open_location OL WHERE R.rid=OL.rid AND L.address=OL.address AND L.postal_code=OL.postal_code AND %(latitude)s-5<L.latitude AND L.latitude<%(latitude)s+5 AND %(longitude)s-0.5<L.longitude AND L.longitude<%(longitude)s+0.5", location)
         
         for result in cursor:
             recom=dict(result)
-            if recom['postal_code'] and recom['city'] and recom['state'] and recom['address']:
+            # print(recom)
+            if recom['r_name'] and recom['postal_code'] and recom['city'] and recom['state'] and recom['address']:
                 try:
-                    recom['postal_code'], recom['city'], recom['state'], recom['address']=str(recom['postal_code']), str(recom['city']), str(recom['state']), str(recom['address'])
                     location_recoms.append(recom)  # can also be accessed using result[0]
                 except:
                     pass
         cursor.close()
     except:
-        flash('get location error')
-    # print(location_recoms)
-    # print("open_location")
-    for loc_rec_i in range(len(location_recoms)):
+        flash('get location recommend error')
 
-        try:
-            cursor = g.conn.execute("SELECT * FROM open_location WHERE address=%(address)s AND postal_code=%(postal_code)s", location_recoms[loc_rec_i])
-            
-            for result in cursor:
-                location_recoms[loc_rec_i]['rid']=str(result['rid'])
-            cursor.close()
-        except:
-            flash('get open_location error')
-    # print(location_recoms)
-    for loc_rec_i in range(len(location_recoms)):
-        try:
-            cursor = g.conn.execute('SELECT r_name FROM restaurants WHERE rid=%(rid)s', location_recoms[loc_rec_i])
-            for result in cursor:
-                location_recoms[loc_rec_i]['r_name']=str(result['r_name'])
-                # names.append(result['r_name'])  # can also be accessed using result[0]
-            cursor.close()
-        except:
-            pass
-            # flash('error in restaurants (loaction recommend)')
     username="guest"
     if session.get('logged_in'):
         username=session['u_name']
