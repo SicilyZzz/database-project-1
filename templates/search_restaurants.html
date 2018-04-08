@@ -36,7 +36,7 @@
 
   <h1>Search for restaurants</h1>
   <!-- Greetings -->
-  <p>Hello <span id="username">{{ username }}</span></p>
+  <p>Hello <span id="username">{{ username }}</span>!</p>
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -49,9 +49,11 @@
 {% endwith %}
 
 
+Kind Reminder: The city or state may not in the United States...
 <form class="navbar-form navbar-left" role="search" method="POST" action="/search_restaurants_act">
   <div class="form-group">
     <input type="text" class="form-control" placeholder="Restaurant Name" name="r_name">
+    <input type="text" class="form-control" placeholder="Category" name="categories">
   </div>
   <select name="noiselevel">
     <option value="Not Specified" selected>Noise Level (Not Specified)</option>
@@ -62,11 +64,11 @@
   </select>
   <select name="starslevel">
     <option value="Not Specified" selected>Stars Level (Not Specified)</option>
-    <option value="5">5</option>
-    <option value="4">4</option>
-    <option value="3">3</option>
-    <option value="2">2</option>
-    <option value="1">1</option>
+    <option value="star5">5</option>
+    <option value="star4">4</option>
+    <option value="star3">3</option>
+    <option value="star2">2</option>
+    <option value="star1">1</option>
   </select>
   <select name="wifi">
     <option value="Not Specified" selected>WiFi (Not Specified)</option>
@@ -74,9 +76,43 @@
     <option value="paid">paid</option>
     <option value="no">no</option>
   </select>
+  <br />Type of meal:
+  <input class="form-check-input" type="checkbox" name="mealtype" value="dessert">
+  <label class="form-check-label" for="inlineCheckbox1">dessert</label>
+  <input class="form-check-input" type="checkbox" name="mealtype" value="latenight">
+  <label class="form-check-label" for="inlineCheckbox2">latenight</label>
+  <input class="form-check-input" type="checkbox" name="mealtype" value="dinner">
+  <label class="form-check-label" for="inlineCheckbox1">dinner</label>
+  <input class="form-check-input" type="checkbox" name="mealtype" value="lunch">
+  <label class="form-check-label" for="inlineCheckbox2">lunch</label>
+  <input class="form-check-input" type="checkbox" name="mealtype" value="breakfast">
+  <label class="form-check-label" for="inlineCheckbox1">dbreakfast</label>
+  <input class="form-check-input" type="checkbox" name="mealtype" value="brunch">
+  <label class="form-check-label" for="inlineCheckbox2">brunch</label>
+
+  <br />Ambience:
+  <input class="form-check-input" type="checkbox" name="ambience" value="romantic">
+  <label class="form-check-label" for="inlineCheckbox1">romantic</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="intimate">
+  <label class="form-check-label" for="inlineCheckbox2">intimate</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="classy">
+  <label class="form-check-label" for="inlineCheckbox1">classy</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="hipster">
+  <label class="form-check-label" for="inlineCheckbox2">hipster</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="touristy">
+  <label class="form-check-label" for="inlineCheckbox1">touristy</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="trendy">
+  <label class="form-check-label" for="inlineCheckbox2">trendy</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="upscale">
+  <label class="form-check-label" for="inlineCheckbox1">upscale</label>
+  <input class="form-check-input" type="checkbox" name="ambience" value="casual">
+  <label class="form-check-label" for="inlineCheckbox2">casual</label>
+
+
   <button type="submit" class="btn btn-default">Search</button>
 </form>
-<br><br>
+
+<br /><br /><br /><br />
 <p>Results:</p>
 <!-- <form method="POST" action="/search_restaurants_act">
   <p>Name<input type="text">
