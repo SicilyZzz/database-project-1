@@ -54,7 +54,7 @@
   {% if data != None %}
     <div>{{data}}</div>
     <!-- show restaurant details -->
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">bookmark</th>
@@ -98,8 +98,17 @@
         </tr>
       </tbody>
     </table>
+    {% if data.categories != None %}
+    <div>Categories:
+      {% for n in data.categories %}
+      <span class="label label-primary">{{n}}</span>
+      {% endfor %}
+    </div>
+
+    
+    {% endif %}
     <div>Parking</div>
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">garage</th>
@@ -119,7 +128,7 @@
       </tbody>
     </table>
     <div>Meal Type</div>
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">dessert</th>
@@ -142,7 +151,7 @@
       </tbody>
     </table>
     <div>Ambience</div>
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">romantic</th>
@@ -186,7 +195,7 @@
 {% endif %}
 
 <p>Tips:</p>
-<table class="table">
+<table class="table table-hover">
   <thead>
     <tr>
       <th scope="col">tid</th> 
@@ -247,7 +256,7 @@
 {% endif %}
 
 <p>Reviews:</p>
-<table class="table">
+<table class="table table-hover">
   <thead>
     <tr>
       <th scope="col">review_id</th> 

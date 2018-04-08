@@ -340,16 +340,31 @@ def show_restaurant_details():
     ############################
     # restaurants (categories) #
     ############################
+    try:
+        cursor = g.conn.execute('SELECT style FROM categories WHERE rid=%(rid)s', restaurant)
+        restaurant['categories']=[]
+        for result in cursor:
+            restaurant['categories'].append(result['style'])
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error in restaurants (categories)')
+    ############################
+    # restaurants (location)   #
+    ############################
 
+    ############################
+    # restaurants (hours)      #
+    ############################
 
     # change None to unknown
     for k in restaurant.keys():
         if restaurant[k] is None:
             restaurant[k]="Unknown"
 
-    # SELECT with rid
-    # restaurants
-    # TODO: SELECT * FROM restaurants
+    # check categories
+    if len(restaurant['categories'])==0:
+        restaurant['categories']=None
 
     ############
     # bookmark #
