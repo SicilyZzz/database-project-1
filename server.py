@@ -314,30 +314,48 @@ def search_restaurants_act():
     
     # print(request.form['noiselevel'])
     results = []
-    sql="SELECT * FROM restaurants "
+    sql="SELECT * FROM restaurants R, categories C, open_location O, location L WHERE R.rid=C.rid "
     flag=False
-    colnames=['r_name', 'noiselevel', 'stars', 'wifi']# maybe show others in detail page
+    colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] #  maybe show others in detail page
     mealtype = ['dessert', 'latenight', 'dinner', 'lunch', 'breakfast', 'brunch']
     ambience = ['romantic', 'intimate', 'classy', 'hipster', 'touristy', 'trendy', 'upscale', 'casual']
     
+
     for col in colnames:
         if col in request.form:
-            restaurants[col]=str(request.form[col])
-    for col in colnames:
-        print(sql)
-        if col in restaurants and restaurants[col]!="Not Specified":
+            if col == "mealtype":
+                mealtype_chose = request.form.getlist("mealtype")
+                for i in mealtype:
+                    if i in mealtype_chose:
+                        restaurants[i]=str(True)
+                    else:
+                        restaurants[i]=str(False)
+            elif col == "ambience":
+                ambience_chose = request.form.getlist("ambience")
+                for i in ambience:
+                    if i in ambience_chose:
+                        restaurants[i]=str(True)
+                    else:
+                        restaurants[i]=str(False)
+            else:
+                restaurants[col]=str(request.form[col])
+
+    print(restaurants)
+    keys = restaurants.keys()
+    for col in keys:
+        if restaurants[col]!="Not Specified":
             sp=""
-            
             if type(restaurants[col])==type(""):
                 sp="\'"
             if not flag:
-                sql=sql+" WHERE "
+                sql=sql+"AND "
                 flag=True
-                sql=sql+col+"="+sp+restaurants[col]+sp
+                sql=sql+"R."+col+"="+sp+restaurants[col]+sp
             else:
-                sql=sql+"AND "+col+"="+sp+restaurants[col]+sp
-            
-    print(restaurants)
+                sql=sql+"AND "+"R."+col+"="+sp+restaurants[col]+sp
+
+    sql = sql+" AND "+"C.style="+"\'"+str(request.form.get("categories"))+"\'"
+    print(sql)
     try:
         cursor = g.conn.execute(sql)
         for result in cursor:
@@ -346,7 +364,7 @@ def search_restaurants_act():
         cursor.close()
     except:
         flash('error')
-        
+
     # return redirect('/search_restaurants')
     return search_restaurants(results)
     # return render_template("search_restaurants.html", **context)
