@@ -57,6 +57,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th scope="col">bookmark</th>
           <th scope="col">rid</th>
           <th scope="col">name</th>
           <th scope="col">noiselevel</th>
@@ -67,15 +68,22 @@
           <th scope="col">good for kids?</th>
           <th scope="col">alcohol</th>
           <th scope="col">wifi</th>
-          <th scope="col">stars</th>
-          <th scope="col">bookmark</th>
+          <th scope="col">stars</th> 
+          <th scope="col">price</th> 
         </tr>
       </thead>
       <tbody>
-        
-        
         <tr>
-          <th scope="row">{{data.rid}}</th>
+          <th>
+            {% if data.is_bookmark%}
+            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+            
+            {% else %}
+            <a href="{{url_for('del_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+            
+            {% endif %}
+          </th>
+          <td scope="row">{{data.rid}}</td>
           <td>{{data.r_name}}</td>
           <td>{{data.noiselevel}}</td>
           <td>{{data.dogsallowed}}</td>
@@ -85,21 +93,82 @@
           <td>{{data.goodforkids}}</td>
           <td>{{data.alcohol}}</td>
           <td>{{data.wifi}}</td>
-          <td>{{data.stars}}</td>
-          <td>
-            {% if data.is_bookmark%}
-            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
-            
-            {% else %}
-            <a href="{{url_for('del_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
-            
-            {% endif %}
-          </td>
+          <td>{{data.stars}}</td> 
+          <td>{{data.price}}</td>
         </tr>
-                 
-          
       </tbody>
     </table>
+    <div>Parking</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">garage</th>
+          <th scope="col">street</th>
+          <th scope="col">lot</th>
+          <th scope="col">valet</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{data.garage}}</td>
+          <td>{{data.street}}</td>
+          <td>{{data.lot}}</td>
+          <td>{{data.valet}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>Meal Type</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">dessert</th>
+          <th scope="col">latenight</th>
+          <th scope="col">dinner</th>
+          <th scope="col">lunch</th>
+          <th scope="col">breakfast</th>
+          <th scope="col">brunch</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{data.dessert}}</td>
+          <td>{{data.latenight}}</td>
+          <td>{{data.dinner}}</td>
+          <td>{{data.lunch}}</td>
+          <td>{{data.breakfast}}</td>
+          <td>{{data.brunch}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>Ambience</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">romantic</th>
+          <th scope="col">intimate</th>
+          <th scope="col">classy</th>
+          <th scope="col">hipster</th>
+          <th scope="col">touristy</th>
+          <th scope="col">trendy</th>
+          <th scope="col">upscale</th>
+          <th scope="col">casual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{data.romantic}}</td>
+          <td>{{data.intimate}}</td>
+          <td>{{data.classy}}</td>
+          <td>{{data.hipster}}</td>
+          <td>{{data.touristy}}</td>
+          <td>{{data.trendy}}</td>
+          <td>{{data.upscale}}</td>
+          <td>{{data.casual}}</td>
+        </tr>
+      </tbody>
+    </table>
+
   {% endif %}
 
 {% if not session.logged_in %}

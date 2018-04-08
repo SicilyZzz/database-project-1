@@ -337,6 +337,16 @@ def show_restaurant_details():
     except:
         flash('error in restaurants')
 
+    ############################
+    # restaurants (categories) #
+    ############################
+
+
+    # change None to unknown
+    for k in restaurant.keys():
+        if restaurant[k] is None:
+            restaurant[k]="Unknown"
+
     # SELECT with rid
     # restaurants
     # TODO: SELECT * FROM restaurants
