@@ -122,10 +122,14 @@ def index():
     #
     # example of a database query
     #
-    cursor = g.conn.execute("SELECT r_name FROM restaurants ORDER BY RANDOM() LIMIT 10")
-    names = []
+    cursor = g.conn.execute("SELECT rid, r_name FROM restaurants ORDER BY RANDOM() LIMIT 10")
+    recoms = []
+
     for result in cursor:
-      names.append(result['r_name'])  # can also be accessed using result[0]
+        recom={}
+        recom['rid']=result['rid']
+        recom['r_name']=result['r_name']
+        recoms.append(recom)  # can also be accessed using result[0]
     cursor.close()
 
     #
@@ -158,7 +162,7 @@ def index():
     if session.get('logged_in'):
         username=session['u_name']
     
-    context = dict(data = names, username=username)
+    context = dict(data = recoms, username=username)
 
 
     #
