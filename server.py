@@ -276,13 +276,14 @@ def search_restaurants_act():
     
     for col in colnames:
         if col in request.form:
-            restaurants[col]=request.form[col]
+            restaurants[col]=str(request.form[col])
     for col in colnames:
         print(sql)
         if col in restaurants and restaurants[col]!="Not Specified":
             sp=""
+            
             if type(restaurants[col])==type(""):
-                sp="'"
+                sp="\'"
             if not flag:
                 sql=sql+" WHERE "
                 flag=True
@@ -352,6 +353,20 @@ def show_restaurant_details():
     #########
     # photo #
     #########
+    restaurant['has_photo']=[]
+    try:
+        cursor = g.conn.execute('SELECT pid, caption, label FROM has_photo WHERE rid=%(rid)s', restaurant)
+        
+        
+        for result in cursor:
+            print(result)
+            restaurant['has_photo'].append(dict(result))
+        cursor.close()
+    except:
+        flash('error in restaurants (photo)')
+
+    if len(restaurant['has_photo'])==0:
+        restaurant['has_photo']=None
 
     ############################
     # restaurants (location)   #
