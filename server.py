@@ -314,7 +314,7 @@ def search_restaurants_act():
     
     # print(request.form['noiselevel'])
     results = []
-    sql="SELECT * FROM restaurants R, categories C, open_location O, location L WHERE R.rid=C.rid "
+    sql="SELECT * FROM restaurants R, categories C WHERE R.rid=C.rid "
     flag=False
     colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] #  maybe show others in detail page
     mealtype = ['dessert', 'latenight', 'dinner', 'lunch', 'breakfast', 'brunch']
