@@ -29,6 +29,7 @@
       <li role="presentation"><a href="register_page">Register</a></li>
     {% else %}
       <li role="presentation"><a href="show_friend_list">Friends</a></li>
+      <li role="presentation"><a href="show_bookmark_list">Bookmarks</a></li>
       <li role="presentation"><a href="logout_act">Logout</a></li>
     {% endif %}
   </ul>
@@ -76,10 +77,10 @@
         <tr>
           <th>
             {% if data.is_bookmark%}
-            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+            <a href="{{url_for('del_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
             
             {% else %}
-            <a href="{{url_for('del_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+            <a href="{{url_for('add_bookmark_act', uid=data.uid, rid=data.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
             
             {% endif %}
           </th>

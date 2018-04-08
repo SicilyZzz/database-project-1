@@ -28,13 +28,13 @@
       <li role="presentation"><a href="login_page">Login</a></li>
       <li role="presentation"><a href="register_page">Register</a></li>
     {% else %}
-      <li role="presentation" class="active"><a href="show_friend_list">Friends</a></li>
-      <li role="presentation"><a href="show_bookmark_list">Bookmarks</a></li>
+      <li role="presentation" ><a href="show_friend_list">Friends</a></li>
+      <li role="presentation" class="active"><a href="show_bookmark_list">Bookmarks</a></li>
       <li role="presentation"><a href="logout_act">Logout</a></li>
     {% endif %}
   </ul>
 
-  <h1>Show friend list</h1>
+  <h1>Show bookmark list</h1>
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
 
@@ -58,17 +58,23 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">uid</th>
+          <th scope="col">rid</th>
           <th scope="col">name</th>
+          <th scope="col">details</th>
         </tr>
       </thead>
       <tbody>
         
         {% for n in data %}
         <tr>
-          <th scope="row">{{n.uid}}</th>
+          <th scope="row">{{n.rid}}</th>
           
-          <td>{{n.u_name}}</td>
+          <td>{{n.r_name}}</td>
+          <td>
+            <a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </a>
+          </td>
         </tr>
         {% endfor %}
                  
