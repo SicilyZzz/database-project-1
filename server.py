@@ -433,12 +433,11 @@ def show_restaurant_details():
     for weekday in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
         if weekday not in restaurant['checkin']:
             restaurant['checkin'][weekday]={}
-            for h in range(24):
-                
-                h_s=str('{:02d}'.format(int(h)))
-                if h_s not in restaurant['checkin'][weekday]:
-                    restaurant['checkin'][weekday][h_s]=0
-    
+        for h in range(24):
+            h_s=str('{:02d}'.format(int(h)))
+            if h_s not in restaurant['checkin'][weekday]:
+                restaurant['checkin'][weekday][h_s]=0
+    print(restaurant['checkin'])
     ##########################
     # change None to unknown #
     ##########################
