@@ -360,7 +360,7 @@ def show_restaurant_details():
     try:
         cursor = g.conn.execute('SELECT pid, caption, label FROM has_photo WHERE rid=%(rid)s', restaurant)
         for result in cursor:
-            print(result)
+            # print(result)
             restaurant['has_photo'].append(dict(result))
             restaurant['has_photo'][-1]['path']="/static/photos/"+str(result['pid'])+".jpg"
             # restaurant['has_photo'][-1]['path']=str(os.path.join(app.config['UPLOAD_FOLDER'], result['pid']+".jpg"))
