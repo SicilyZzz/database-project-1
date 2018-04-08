@@ -58,7 +58,20 @@
     <option value="quiet">quiet</option>
     <option value="loud">loud</option>
   </select>
-
+  <select name="starslevel">
+    <option value="Not Specified" selected>Stars Level (Not Specified)</option>
+    <option value="5">5</option>
+    <option value="4">4</option>
+    <option value="3">3</option>
+    <option value="2">2</option>
+    <option value="1">1</option>
+  </select>
+  <select name="wifi">
+    <option value="Not Specified" selected>WiFi (Not Specified)</option>
+    <option value="free">free</option>
+    <option value="paid">paid</option>
+    <option value="no">no</option>
+  </select>
   <button type="submit" class="btn btn-default">Search</button>
 </form>
 <br><br>
@@ -69,7 +82,6 @@
 </form> -->
 
   {% if data != None %}
-    <div>{{data}}</div>
     <table class="table table-hover">
       <thead>
         <tr>

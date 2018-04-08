@@ -149,7 +149,7 @@
 
     {% if data.checkin != None %}
     <div>Peak Hours</div>
-    {{data.checkin_nonzero}}
+    <!--{{data.checkin_nonzero}}-->
     <table class="table table-hover">
       <thead>
         <tr>
@@ -167,13 +167,26 @@
         {% for x in data.checkin %}
         <tr>
           <th scope="row">{{x.hour}}:00</th>
-          <td>{{x.Monday}}</td>
-          <td>{{x.Tuesday}}</td>
-          <td>{{x.Wednesday}}</td>
-          <td>{{x.Thursday}}</td>
-          <td>{{x.Friday}}</td>
-          <td>{{x.Saturday}}</td>
-          <td>{{x.Sunday}}</td>
+          {% if x.Monday != 0 %}<td class="bg-primary">{{x.Monday}}</td>
+          {% else %}<td>{{x.Monday}}</td>{% endif %}
+          
+          {% if x.Tuesday != 0 %}<td class="bg-primary">{{x.Tuesday}}</td>
+          {% else %}<td>{{x.Tuesday}}</td>{% endif %}
+
+          {% if x.Wednesday != 0 %}<td class="bg-primary">{{x.Wednesday}}</td>
+          {% else %}<td>{{x.Wednesday}}</td>{% endif %}
+          
+          {% if x.Thursday != 0 %}<td class="bg-primary">{{x.Thursday}}</td>
+          {% else %}<td>{{x.Thursday}}</td>{% endif %}
+          
+          {% if x.Friday != 0 %}<td class="bg-primary">{{x.Friday}}</td>
+          {% else %}<td>{{x.Friday}}</td>{% endif %}
+          
+          {% if x.Saturday != 0 %}<td class="bg-primary">{{x.Saturday}}</td>
+          {% else %}<td>{{x.Saturday}}</td>{% endif %}
+          
+          {% if x.Sunday != 0 %}<td class="bg-primary">{{x.Sunday}}</td>
+          {% else %}<td>{{x.Sunday}}</td>{% endif %}
         </tr>
         {% endfor %}
         
@@ -322,8 +335,8 @@
     <tr>
       <th scope="col">tid</th> 
       <th scope="col">uid</th>
-      <th scope="col">username</th>
       <th scope="col">rid</th>
+      <th scope="col">username</th>
       <th scope="col">text</th>      
       <th scope="col">date</th>
 

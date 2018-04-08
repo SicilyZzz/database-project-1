@@ -276,7 +276,9 @@ def search_restaurants_act():
     results = []
     sql="SELECT * FROM restaurants "
     flag=False
-    colnames=['r_name', 'noiselevel']#, 'smoking', 'dogsallowed', 'hastv', 'accepts_credit_cards', 'goodforkids', 'alcohol', 'wifi', 'stars'] # maybe show others in detail page
+    colnames=['r_name', 'noiselevel', 'stars', 'wifi']# maybe show others in detail page
+    mealtype = ['dessert', 'latenight', 'dinner', 'lunch', 'breakfast', 'brunch']
+    ambience = ['romantic', 'intimate', 'classy', 'hipster', 'touristy', 'trendy', 'upscale', 'casual']
     
     for col in colnames:
         if col in request.form:
