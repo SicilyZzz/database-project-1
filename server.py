@@ -703,7 +703,7 @@ def add_bookmark_act():
         flash('you cannot add a bookmark without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
     info['uid']=session['uid']
-    print(info)
+    # print(info)
     try:
         g.conn.execute('INSERT INTO bookmarks(uid, rid) VALUES (%(uid)s, %(rid)s)', info)
         flash('add a bookmark successfully')
@@ -717,21 +717,20 @@ def add_bookmark_act():
 def del_bookmark_act():
     username="guest"
     info={}
-    info['rid']=request.args.get('rid')
+    info['rid']=str(request.args.get('rid'))
     if session.get('logged_in'):
         username=session['u_name']
     else:
         flash('you cannot delete a bookmark without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
     
-    info['uid']=session['uid']
+    info['uid']=str(session['uid'])
     # print(info)
     try:
-        g.conn.execute('DELETE FROM bookmarks WHERE uid=%(uid)s AND rid=%(rid)s)', info)
+        g.conn.execute('DELETE FROM bookmarks WHERE uid=%(uid)s AND rid=%(rid)s', info)
         flash('delete a bookmark successfully')
     except:
         flash('error in delete bookmark')
-    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
     return redirect(url_for('show_restaurant_details', rid=info['rid']))
 # review useful, funny, cool
 @app.route('/review_vote_act')
