@@ -356,8 +356,6 @@ def show_restaurant_details():
     restaurant['has_photo']=[]
     try:
         cursor = g.conn.execute('SELECT pid, caption, label FROM has_photo WHERE rid=%(rid)s', restaurant)
-        
-        
         for result in cursor:
             print(result)
             restaurant['has_photo'].append(dict(result))

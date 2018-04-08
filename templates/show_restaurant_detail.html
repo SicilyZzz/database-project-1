@@ -146,6 +146,8 @@
     
     {% if data.checkin != None %}
     {% endif %}
+
+    
     
     <div>Location</div>
     <table class="table table-hover">
@@ -172,6 +174,30 @@
       </tbody>
     </table>
     
+
+    {% if data.has_photo != None %}
+    
+    {% for n in data.has_photo %}
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <img class="media-object" src="../../photos/url_for({{n.pid}}).jpg" alt="image error">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">xd</h4>
+        {{n.pid}}
+        <span class="label label-primary">{{n.label}}</span>
+        
+        {{n.caption}}
+      </div>
+    </div>
+    {% endfor %}
+    
+    
+    
+    {% endif %}
+
     <div>Parking</div>
     <table class="table table-hover">
       <thead>
