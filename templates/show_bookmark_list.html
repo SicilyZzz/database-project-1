@@ -58,17 +58,17 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">uid</th>
           <th scope="col">rid</th>
+          <th scope="col">name</th>
         </tr>
       </thead>
       <tbody>
         
         {% for n in data %}
         <tr>
-          <th scope="row">{{n.uid}}</th>
+          <th scope="row">{{n.rid}}</th>
           
-          <td>{{n.rid}}</td>
+          <td>{{n.r_name}}</td>
         </tr>
         {% endfor %}
                  

@@ -855,47 +855,47 @@ def show_friend_list():
 # show bookmark list
 @app.route('/show_bookmark_list')
 def show_bookmark_list():
-    # info={}
+    info={}
     
 
-    # username="guest"
-    # if session.get('logged_in'):
-    #     username=session['u_name']
-    # else:
-    #     flash('you should login to view bookmark list')
-    #     return redirect('login_page')
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+    else:
+        flash('you should login to view bookmark list')
+        return redirect('login_page')
 
 
-    # info['uid']=session['uid']
+    info['uid']=session['uid']
 
-    # bookmarks=[]
-    # try:
-    #     cursor = g.conn.execute('SELECT rid FROM bookmarks WHERE uid=%(uid)s', info)
-    #     for result in cursor:
-    #         bookmark={}
-    #         bookmark['rid']=str(result['rid'])
-    #         bookmarks.append(bookmark)
-    #         # names.append(result['r_name'])  # can also be accessed using result[0]
-    #     cursor.close()
-    # except:
-    #     flash('error in select friends')
+    bookmarks=[]
+    try:
+        cursor = g.conn.execute('SELECT rid FROM bookmarks WHERE uid=%(uid)s', info)
+        for result in cursor:
+            bookmark={}
+            bookmark['rid']=str(result['rid'])
+            bookmarks.append(bookmark)
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error in select friends')
     
-    # for bookmark_i in range(len(bookmarks)):
-    #     try:
-    #         cursor = g.conn.execute('SELECT r_name FROM restaurants WHERE rid=%(rid)s', bookmark[bookmark_i])
-    #         for result in cursor:
-    #             re
-    #         cursor.close()
-    #     except:
-    #         flash('error in select user in friends')
-
-    
+    for bookmark_i in range(len(bookmarks)):
+        try:
+            cursor = g.conn.execute('SELECT r_name FROM restaurants WHERE rid=%(rid)s', bookmarks[bookmark_i])
+            for result in cursor:
+                bookmarks[bookmark_i]['r_name']=str(result['r_name'])
+            cursor.close()
+        except:
+            flash('error in select user in friends')
 
     
-    # # print(reviews)
-    # context = dict(data = friends, username=username)
-    return render_template("show_bookmark_list.html")
-    # return render_template("show_bookmark_list.html", **context)
+
+    
+    # print(reviews)
+    context = dict(data = bookmarks, username=username)
+    # return render_template("show_bookmark_list.html")
+    return render_template("show_bookmark_list.html", **context)
 # some TODOs
 
 
