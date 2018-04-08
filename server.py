@@ -20,7 +20,8 @@ from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
 
 # other library:
-import datetime
+import datetime, copy
+
 # import hashlib
 from flask import session, flash, url_for
 
@@ -429,7 +430,7 @@ def show_restaurant_details():
         cursor.close()
     except:
         flash('error in restaurants (checkin)')
-
+    restaurant['checkin_nonzero']=copy.deepcopy(restaurant['checkin'])
     for weekday in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
         if weekday not in restaurant['checkin']:
             restaurant['checkin'][weekday]={}
@@ -437,8 +438,21 @@ def show_restaurant_details():
             h_s=str(h) #str('{:02d}'.format(int(h)))
             if h_s not in restaurant['checkin'][weekday]:
                 restaurant['checkin'][weekday][h_s]=0
-    # print(restaurant['checkin'])
+    # change to list-dict
+    hr_week_cnt=[]
     
+    for h in range(24):
+        w_cnt={}
+
+        h_s=str(h) #str('{:02d}'.format(int(h)))
+        w_cnt['hour']=h_s
+        for weekday in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
+            w_cnt[weekday]=restaurant['checkin'][weekday][h_s]
+        hr_week_cnt.append(w_cnt)
+            
+    restaurant['checkin']=hr_week_cnt
+    # print(restaurant['checkin'])
+
     ##########################
     # change None to unknown #
     ##########################

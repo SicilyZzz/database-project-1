@@ -149,12 +149,11 @@
 
     {% if data.checkin != None %}
     <div>Peak Hours</div>
-    {{data.checkin}}
+    {{data.checkin_nonzero}}
     <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">hours\weekday</th>
-          <th scope="col">Monday</th>
           <th scope="col">Monday</th>
           <th scope="col">Tuesday</th>
           <th scope="col">Wednesday</th>
@@ -165,16 +164,16 @@
         </tr>
       </thead>
       <tbody>
-        {% for x in range(24) %}
+        {% for x in data.checkin %}
         <tr>
-          <th scope="row">{{x}}:00</th>
-          <td>{{data.checkin.Monday}}</td>
-          <td>{{data.checkin.Tuesday}}</td>
-          <td>{{data.checkin.Wednesday}}</td>
-          <td>{{data.checkin.Thursday}}</td>
-          <td>{{data.checkin.Friday}}</td>
-          <td>{{data.checkin.Saturday}}</td>
-          <td>{{data.checkin.Sunday}}</td>
+          <th scope="row">{{x.hour}}:00</th>
+          <td>{{x.Monday}}</td>
+          <td>{{x.Tuesday}}</td>
+          <td>{{x.Wednesday}}</td>
+          <td>{{x.Thursday}}</td>
+          <td>{{x.Friday}}</td>
+          <td>{{x.Saturday}}</td>
+          <td>{{x.Sunday}}</td>
         </tr>
         {% endfor %}
         
