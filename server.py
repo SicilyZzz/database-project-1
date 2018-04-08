@@ -25,7 +25,8 @@ import datetime
 from flask import session, flash, url_for
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-YELP_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'photos')
+# YELP_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'photos')
+YELP_FOLDER = os.path.join('static', 'photos')
 
 app = Flask(__name__, template_folder=tmpl_dir)
 app.config['UPLOAD_FOLDER'] = YELP_FOLDER
@@ -361,13 +362,13 @@ def show_restaurant_details():
         for result in cursor:
             print(result)
             restaurant['has_photo'].append(dict(result))
-            restaurant['has_photo'][-1]['path']=os.path.join(app.config['UPLOAD_FOLDER'], result['pid']+".jpg")
+            restaurant['has_photo'][-1]['path']=str(os.path.join(app.config['UPLOAD_FOLDER'], result['pid']+".jpg"))
         cursor.close()
     except:
         flash('error in restaurants (photo)')
     print(restaurant['has_photo'])
-    if len(restaurant['has_photo'])==0:
-        restaurant['has_photo']=None
+    # if len(restaurant['has_photo'])==0:
+    #     restaurant['has_photo']=None
 
     ############################
     # restaurants (location)   #
