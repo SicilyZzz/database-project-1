@@ -371,7 +371,8 @@ def search_restaurants_act():
     print(restaurants)
     keys = restaurants.keys()
     for col in keys:
-        if restaurants[col]!="Not Specified":
+        print(restaurants[col])
+        if restaurants[col]!="Not Specified" and restaurants[col]!="":
             sp=""
             if type(restaurants[col])==type(""):
                 sp="\'"
@@ -464,7 +465,7 @@ def search_restaurants_fuzzy_act():
     print(restaurants)
     keys = restaurants.keys()
     for col in keys:
-        if restaurants[col]!="Not Specified":
+        if restaurants[col]!="Not Specified" and restaurants[col]!="":
             sp=""
             if type(restaurants[col])==type(""):
                 sp="\'"
