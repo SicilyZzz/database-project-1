@@ -314,12 +314,40 @@ def search_restaurants_act():
     
     # print(request.form['noiselevel'])
     results = []
-    sql="SELECT * FROM restaurants R, categories C WHERE R.rid=C.rid "
-    flag=False
+    mark=False
     colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] #  maybe show others in detail page
     mealtype = ['dessert', 'latenight', 'dinner', 'lunch', 'breakfast', 'brunch']
     ambience = ['romantic', 'intimate', 'classy', 'hipster', 'touristy', 'trendy', 'upscale', 'casual']
-    
+    category = str(request.form.get("categories"))
+    cities = str(request.form.get("city"))
+    states = str(request.form.get("state"))
+
+    print(request.form)
+    if category=="":
+        if cities=="" and states=="":
+            sql="SELECT * FROM restaurants R WHERE "
+        else:
+            mark=True
+            sql="SELECT * FROM restaurants R, open_location O, location L WHERE R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
+            if cities != "" and states == "":
+                sql = sql +"AND "+"L.city="+"\'"+cities+"\'"
+            elif cities == "" and states != "":
+                sql = sql +"AND "+"L.state="+"\'"+states+"\'" 
+            else:
+                sql = sql +"AND "+"L.city="+"\'"+cities+"\'"+" AND "+"L.state="+"\'"+states+"\'" 
+    elif category!="":
+        mark=True
+        if cities=="" and states=="":
+            sql="SELECT * FROM restaurants R, categories C WHERE R.rid=C.rid AND "+"C.style="+"\'"+category+"\'"
+        else:
+            sql="SELECT * FROM restaurants R, categories C, open_location O, location L WHERE R.rid=C.rid AND "+"C.style="+"\'"+category+"\'"+" AND R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
+            if cities != "" and states == "":
+                sql = sql +"AND "+"L.city="+"\'"+cities+"\'"
+            elif cities == "" and states != "":
+                sql = sql +"AND "+"L.state="+"\'"+states+"\'" 
+            else:
+                sql = sql +"AND "+"L.city="+"\'"+cities+"\'"+" AND "+"L.state="+"\'"+states+"\'" 
+    print(sql)
 
     for col in colnames:
         if col in request.form:
@@ -347,15 +375,12 @@ def search_restaurants_act():
             sp=""
             if type(restaurants[col])==type(""):
                 sp="\'"
-            if not flag:
-                sql=sql+"AND "
-                flag=True
+            if not mark:
                 sql=sql+"R."+col+"="+sp+restaurants[col]+sp
             else:
-                sql=sql+"AND "+"R."+col+"="+sp+restaurants[col]+sp
-
-    sql = sql+" AND "+"C.style="+"\'"+str(request.form.get("categories"))+"\'"
+                sql=sql+" AND "+"R."+col+"="+sp+restaurants[col]+sp    
     print(sql)
+
     try:
         cursor = g.conn.execute(sql)
         for result in cursor:
