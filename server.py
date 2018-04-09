@@ -377,6 +377,7 @@ def search_restaurants_act():
                 sp="\'"
             if not mark:
                 sql=sql+"R."+col+"="+sp+restaurants[col]+sp
+                mark=True
             else:
                 sql=sql+" AND "+"R."+col+"="+sp+restaurants[col]+sp    
     print(sql)
@@ -393,6 +394,105 @@ def search_restaurants_act():
     # return redirect('/search_restaurants')
     return search_restaurants(results)
     # return render_template("search_restaurants.html", **context)
+
+@app.route('/search_restaurants_fuzzy_act', methods=['POST'])
+def search_restaurants_fuzzy_act():
+    
+    print(request.args)
+
+    restaurants={}
+    # restaurants['r_name'] = request.form['r_name']
+
+    # restaurants['password'] = request.form['password'] 
+    
+    # print(request.form['noiselevel'])
+    results = []
+    mark=False
+    colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] #  maybe show others in detail page
+    mealtype = ['dessert', 'latenight', 'dinner', 'lunch', 'breakfast', 'brunch']
+    ambience = ['romantic', 'intimate', 'classy', 'hipster', 'touristy', 'trendy', 'upscale', 'casual']
+    category = str(request.form.get("categories"))
+    cities = str(request.form.get("city"))
+    states = str(request.form.get("state"))
+
+    print(request.form)
+    if category=="":
+        if cities=="" and states=="":
+            sql="SELECT * FROM restaurants R WHERE "
+        else:
+            mark=True
+            sql="SELECT * FROM restaurants R, open_location O, location L WHERE R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
+            if cities != "" and states == "":
+                sql = sql +"AND "+"L.city LIKE "+"\'"+"%%"+cities+"%%"+"\'"
+            elif cities == "" and states != "":
+                sql = sql +"AND "+"L.state LIKE "+"\'"+"%%"+states+"%%"+"\'" 
+            else:
+                sql = sql +"AND "+"L.city LIKE "+"\'"+"%%"+cities+"%%"+"\'"+" AND "+"L.state LIKE "+"\'"+"%%"+states+"%%"+"\'" 
+    elif category!="":
+        mark=True
+        if cities=="" and states=="":
+            sql="SELECT * FROM restaurants R, categories C WHERE R.rid=C.rid AND "+"C.style LIKE "+"\'"+"%%"+category+"%%"+"\'"
+        else:
+            sql="SELECT * FROM restaurants R, categories C, open_location O, location L WHERE R.rid=C.rid AND "+"C.style LIKE "+"\'"+"%%"+category+"%%"+"\'"+" AND R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
+            if cities != "" and states == "":
+                sql = sql +"AND "+"L.city LIKE "+"\'"+"%%"+cities+"%%"+"\'"
+            elif cities == "" and states != "":
+                sql = sql +"AND "+"L.state LIKE "+"\'"+"%%"+states+"%%"+"\'" 
+            else:
+                sql = sql +"AND "+"L.city LIKE "+"\'"+"%%"+cities+"%%"+"\'"+" AND "+"L.state LIKE "+"\'"+"%%"+states+"%%"+"\'" 
+    print(sql)
+
+    for col in colnames:
+        if col in request.form:
+            if col == "mealtype":
+                mealtype_chose = request.form.getlist("mealtype")
+                for i in mealtype:
+                    if i in mealtype_chose:
+                        restaurants[i]=str(True)
+                    else:
+                        restaurants[i]=str(False)
+            elif col == "ambience":
+                ambience_chose = request.form.getlist("ambience")
+                for i in ambience:
+                    if i in ambience_chose:
+                        restaurants[i]=str(True)
+                    else:
+                        restaurants[i]=str(False)
+            else:
+                restaurants[col]=str(request.form[col])
+
+    print(restaurants)
+    keys = restaurants.keys()
+    for col in keys:
+        if restaurants[col]!="Not Specified":
+            sp=""
+            if type(restaurants[col])==type(""):
+                sp="\'"
+            if not mark:
+                mark=True
+                if col == 'r_name':
+                    sql=sql+"R."+col+" LIKE "+sp+"%%"+restaurants[col]+"%%"+sp
+                else:
+                    sql=sql+"R."+col+"="+sp+restaurants[col]+sp
+            else:
+                if col == 'r_name':
+                    sql=sql+" AND "+"R."+col+" LIKE "+sp+"%%"+restaurants[col]+"%%"+sp
+                else:
+                    sql=sql+" AND "+"R."+col+"="+sp+restaurants[col]+sp    
+    print(sql)
+
+    try:
+        cursor = g.conn.execute(sql)
+        for result in cursor:
+            results.append(dict(result))
+            # names.append(result['r_name'])  # can also be accessed using result[0]
+        cursor.close()
+    except:
+        flash('error')
+
+    # return redirect('/search_restaurants')
+    return search_restaurants(results)
+
 @app.route('/search_restaurants')
 def search_restaurants(results=None):
 
