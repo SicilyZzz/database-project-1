@@ -59,17 +59,16 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">uid</th>
           <th scope="col">name</th>
+          <th scope="col">registered</th>
         </tr>
       </thead>
       <tbody>
         
         {% for n in data %}
         <tr>
-          <th scope="row">{{n.uid}}</th>
-          
           <td>{{n.u_name}} <a href="{{url_for('del_friend_act_at_friend_list', uid=n.uid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a> </td>
+          <th scope="row">{{n.since}}</th>
         </tr>
         {% endfor %}
                  

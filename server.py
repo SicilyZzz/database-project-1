@@ -308,14 +308,9 @@ def search_restaurants_act():
     print(request.args)
 
     restaurants={}
-    # restaurants['r_name'] = request.form['r_name']
-
-    # restaurants['password'] = request.form['password'] 
-    
-    # print(request.form['noiselevel'])
     results = []
     mark=False
-    colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] #  maybe show others in detail page
+    colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] # maybe show others in detail page
     mealtype = ['dessert', 'latenight', 'dinner', 'lunch', 'breakfast', 'brunch']
     ambience = ['romantic', 'intimate', 'classy', 'hipster', 'touristy', 'trendy', 'upscale', 'casual']
     category = str(request.form.get("categories"))
@@ -325,8 +320,10 @@ def search_restaurants_act():
     print(request.form)
     if category=="":
         if cities=="" and states=="":
+            # only have constraints on attributes of table Restaurants 
             sql="SELECT * FROM restaurants R WHERE "
         else:
+            # have constraints on attributes of table Restaurants and Location
             mark=True
             sql="SELECT * FROM restaurants R, open_location O, location L WHERE R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
             if cities != "" and states == "":
@@ -338,8 +335,10 @@ def search_restaurants_act():
     elif category!="":
         mark=True
         if cities=="" and states=="":
+            # have constraints on attributes of table Restaurants and Categories
             sql="SELECT * FROM restaurants R, categories C WHERE R.rid=C.rid AND "+"C.style="+"\'"+category+"\'"
         else:
+            # have constraints on attributes of table Restaurnats, Categories and Location
             sql="SELECT * FROM restaurants R, categories C, open_location O, location L WHERE R.rid=C.rid AND "+"C.style="+"\'"+category+"\'"+" AND R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
             if cities != "" and states == "":
                 sql = sql +"AND "+"L.city="+"\'"+cities+"\'"
@@ -347,10 +346,11 @@ def search_restaurants_act():
                 sql = sql +"AND "+"L.state="+"\'"+states+"\'" 
             else:
                 sql = sql +"AND "+"L.city="+"\'"+cities+"\'"+" AND "+"L.state="+"\'"+states+"\'" 
-    print(sql)
 
+    # fill dictionary restaurants with data retrieved from request.form
     for col in colnames:
         if col in request.form:
+            # the HTML elements named 'mealtype' and 'ambience' are lists
             if col == "mealtype":
                 mealtype_chose = request.form.getlist("mealtype")
                 for i in mealtype:
@@ -370,6 +370,7 @@ def search_restaurants_act():
 
     print(restaurants)
     keys = restaurants.keys()
+    # add the constraints into the WHERE clause
     for col in keys:
         print(restaurants[col])
         if restaurants[col]!="Not Specified" and restaurants[col]!="":
@@ -396,17 +397,13 @@ def search_restaurants_act():
     return search_restaurants(results)
     # return render_template("search_restaurants.html", **context)
 
+# add fuzzy search with keywords
 @app.route('/search_restaurants_fuzzy_act', methods=['POST'])
 def search_restaurants_fuzzy_act():
     
     print(request.args)
 
     restaurants={}
-    # restaurants['r_name'] = request.form['r_name']
-
-    # restaurants['password'] = request.form['password'] 
-    
-    # print(request.form['noiselevel'])
     results = []
     mark=False
     colnames=['r_name', 'noiselevel', 'stars', 'wifi', 'mealtype', 'ambience'] #  maybe show others in detail page
@@ -419,8 +416,10 @@ def search_restaurants_fuzzy_act():
     print(request.form)
     if category=="":
         if cities=="" and states=="":
+            # only have constraints on attributes of table Restaurants 
             sql="SELECT * FROM restaurants R WHERE "
         else:
+            # have constraints on attributes of table Restaurants and Location
             mark=True
             sql="SELECT * FROM restaurants R, open_location O, location L WHERE R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
             if cities != "" and states == "":
@@ -432,8 +431,10 @@ def search_restaurants_fuzzy_act():
     elif category!="":
         mark=True
         if cities=="" and states=="":
+            # have constraints on attributes of table Restaurants and Categories
             sql="SELECT * FROM restaurants R, categories C WHERE R.rid=C.rid AND "+"C.style LIKE "+"\'"+"%%"+category+"%%"+"\'"
         else:
+            # have constraints on attributes of table Restaurnats, Categories and Location
             sql="SELECT * FROM restaurants R, categories C, open_location O, location L WHERE R.rid=C.rid AND "+"C.style LIKE "+"\'"+"%%"+category+"%%"+"\'"+" AND R.rid=O.rid AND O.address=L.address AND O.postal_code=L.postal_code "
             if cities != "" and states == "":
                 sql = sql +"AND "+"L.city LIKE "+"\'"+"%%"+cities+"%%"+"\'"
@@ -441,10 +442,11 @@ def search_restaurants_fuzzy_act():
                 sql = sql +"AND "+"L.state LIKE "+"\'"+"%%"+states+"%%"+"\'" 
             else:
                 sql = sql +"AND "+"L.city LIKE "+"\'"+"%%"+cities+"%%"+"\'"+" AND "+"L.state LIKE "+"\'"+"%%"+states+"%%"+"\'" 
-    print(sql)
 
+    # fill dictionary restaurants with data retrieved from request.form
     for col in colnames:
         if col in request.form:
+            # the HTML elements named 'mealtype' and 'ambience' are lists
             if col == "mealtype":
                 mealtype_chose = request.form.getlist("mealtype")
                 for i in mealtype:
@@ -464,6 +466,7 @@ def search_restaurants_fuzzy_act():
 
     print(restaurants)
     keys = restaurants.keys()
+    # add the constraints into the WHERE clause
     for col in keys:
         if restaurants[col]!="Not Specified" and restaurants[col]!="":
             sp=""
@@ -1023,7 +1026,7 @@ def show_friend_list():
     friends=[]
     for fuid in friends_uid:
         try:
-            cursor = g.conn.execute('SELECT u_name, uid FROM users WHERE uid=%(uid_b)s', fuid)
+            cursor = g.conn.execute('SELECT u_name, since FROM users WHERE uid=%(uid_b)s', fuid)
             for result in cursor:
                 friends.append(dict(result))
             cursor.close()
