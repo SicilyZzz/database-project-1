@@ -336,10 +336,10 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">tid</th> 
-      <th scope="col">uid</th>
+      <!-- <th scope="col">tid</th>  -->
+      <!-- <th scope="col">uid</th> -->
       <th scope="col">username</th>
-      <th scope="col">rid</th>
+      <!-- <th scope="col">rid</th> -->
       <th scope="col">text</th>      
       <th scope="col">date</th>
 
@@ -349,8 +349,8 @@
     
     {% for n in tips %}
     <tr>
-      <th scope="row">{{n.tid}}</th>
-      <td>{{n.uid}}</td>
+      <!-- <th scope="row">{{n.tid}}</th> -->
+      <!-- <td>{{n.uid}}</td> -->
       <td>{{n.u_name}}
         <button type="button" class="btn">
         
@@ -363,7 +363,7 @@
         </button>
         
       </td>
-      <td>{{n.rid}}</td>
+      <!-- <td>{{n.rid}}</td> -->
       <td>{{n.t_text}}</td>
       <td>{{n.t_date}}</td>
     </tr>
@@ -397,23 +397,23 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">review_id</th> 
+      <!-- <th scope="col">review_id</th>  -->
       <th scope="col">rating</th>
       <th scope="col">plaintext</th>
       <th scope="col">useful</th>
       <th scope="col">funny</th>
       <th scope="col">cool</th>
       <th scope="col">date</th>
-      <th scope="col">uid</th>
+      <!-- <th scope="col">uid</th> -->
       <th scope="col">username</th>
-      <th scope="col">rid</th>
+      <!-- <th scope="col">rid</th> -->
     </tr>
   </thead>
   <tbody>
     
     {% for n in reviews %}
     <tr>
-      <th scope="row">{{n.review_id}}</th>
+      <!-- <th scope="row">{{n.review_id}}</th> -->
       <td>{{n.rating}}</td>
       <td>{{n.plaintext}}</td>
       <td>{{n.useful}}
@@ -432,7 +432,7 @@
         </a>
       </td>
       <td>{{n.date}}</td>
-      <td>{{n.uid}}</td>
+      <!-- <td>{{n.uid}}</td> -->
       <td>{{n.u_name}}
         <button type="button" class="btn">
         
@@ -445,7 +445,7 @@
         </button>
         
       </td>
-      <td>{{n.rid}}</td>
+      <!-- <td>{{n.rid}}</td> -->
     </tr>
     {% endfor %}
   </tbody>
