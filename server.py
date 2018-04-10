@@ -981,8 +981,8 @@ def del_friend_act():
     if session.get('logged_in'):
         username=session['u_name']
     else:
-        # you cannot add a friend without login
-        flash('you cannot add a friend without login')
+        
+        flash('you cannot delete a friend without login')
         return redirect(url_for('show_restaurant_details', rid=info['rid']))
     friend={}
     friend['uid_a']=session['uid']
@@ -1055,7 +1055,32 @@ def show_friend_list():
     context = dict(data = friends, username=username, reviews=reviews, tips=tips)
 
     return render_template("show_friend_list.html", **context)
+@app.route('/del_friend_act_at_friend_list')
+def del_friend_act_at_friend_list():
+    # print(request.form['review_text'])
+    info={}
+    
+    info['uid']=request.args.get('uid')
 
+    username="guest"
+    if session.get('logged_in'):
+        username=session['u_name']
+        flash('Delete your friend successfully')
+    else:
+        # you cannot add a friend without login
+        flash('you cannot delete a friend without login')
+        return redirect(url_for('show_friend_list'))
+        
+    friend={}
+    friend['uid_a']=session['uid']
+    friend['uid_b']=info['uid']
+    try:
+        g.conn.execute('DELETE FROM friends WHERE uid_a=%(uid_a)s AND uid_b=%(uid_b)s', friend)
+        
+    except:
+        flash('error')
+    # return render_template("show_restaurant_detail.html", messages={"rid":restaurant['rid']})
+    return redirect(url_for('show_friend_list'))
 # show bookmark list
 @app.route('/show_bookmark_list')
 def show_bookmark_list():

@@ -52,6 +52,31 @@
 
 
 <p>Results:</p>
+<p class="p-3 mb-2 bg-primary text-white">Friends:</p>
+{% if data != None %}
+    
+    
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">uid</th>
+          <th scope="col">name</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for n in data %}
+        <tr>
+          <th scope="row">{{n.uid}}</th>
+          
+          <td>{{n.u_name}} <a href="{{url_for('del_friend_act_at_friend_list', uid=n.uid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a> </td>
+        </tr>
+        {% endfor %}
+                 
+          
+      </tbody>
+    </table>
+  {% endif %}
 <p class="p-3 mb-2 bg-primary text-white">Tips:</p>
 <table class="table table-hover">
   <thead>
@@ -72,7 +97,7 @@
       <th scope="row">{{n.tid}}</th>
       <td>{{n.uid}}</td>
       <td>{{n.u_name}}
-        <button type="button" class="btn">
+        <!-- <button type="button" class="btn">
         
         {% if n.is_friend %}
         <a href="{{url_for('del_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
@@ -80,7 +105,7 @@
         <a href="{{url_for('add_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
         
         {% endif %}
-        </button>
+        </button> -->
         
       </td>
       <td>{{n.rid}}</td>
@@ -133,14 +158,14 @@
       <td>{{n.date}}</td>
       <td>{{n.uid}}</td>
       <td>{{n.u_name}}
-        <button type="button" class="btn">
+        <!-- <button type="button" class="btn">
         
         {% if n.is_friend %}
         <a href="{{url_for('del_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
         {% else %}
         <a href="{{url_for('add_friend_act', uid=n.uid, rid=n.rid)}}"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
         {% endif %}
-        </button>
+        </button> -->
         
       </td>
       <td>{{n.rid}}</td>
@@ -149,32 +174,7 @@
   </tbody>
 </table>
   {% endif %}
-  {% if data != None %}
-    
-    <!-- show restaurant details -->
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">uid</th>
-          <th scope="col">name</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        {% for n in data %}
-        <tr>
-          <th scope="row">{{n.uid}}</th>
-          
-          <td>{{n.u_name}}</td>
-        </tr>
-        {% endfor %}
-                 
-          
-      </tbody>
-    </table>
-  {% endif %}
-
-</table>
+  
 
 
 <!-- <span style="bottom:0; right:0;"><a href="http://glyphicons.com/">Glyphicons</a></span> -->
