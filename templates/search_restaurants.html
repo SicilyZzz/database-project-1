@@ -191,10 +191,15 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">rid</th>
+          <!-- <th scope="col">rid</th> -->
           <th scope="col">name</th>
-          <th scope="col">noiselevel</th>
+          <th scope="col">stars</th>
+          <th scope="col">price</th>
 
+          <th scope="col">noiselevel</th>
+          
+          <th scope="col">wifi</th>
+          <th scope="col">price</th>
           <th scope="col">details</th>
         </tr>
       </thead>
@@ -202,9 +207,15 @@
         
         {% for n in data %}
         <tr>
-          <th scope="row">{{n.rid}}</th>
+          <!-- <th scope="row">{{n.rid}}</th> -->
           <td>{{n.r_name}}</td>
+          <td>{{n.stars}}</td>
+          <td>{{n.price}}</td>
+          
           <td>{{n.noiselevel}}</td>
+          
+          <td>{{n.wifi}}</td>
+          <td>{{n.price}}</td>
           <td><a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
   <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></a></td>
         </tr>
