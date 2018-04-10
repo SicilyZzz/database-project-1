@@ -87,6 +87,7 @@
       <!-- <th scope="col">rid</th> -->
       <th scope="col">text</th>      
       <th scope="col">date</th>
+      <th scope="col">details</th>
 
     </tr>
   </thead>
@@ -111,6 +112,8 @@
       <!-- <td>{{n.rid}}</td> -->
       <td>{{n.t_text}}</td>
       <td>{{n.t_date}}</td>
+      <td><a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></a></td>
     </tr>
     {% endfor %}
   </tbody>
@@ -131,6 +134,7 @@
       <!-- <th scope="col">uid</th> -->
       <th scope="col">username</th>
       <!-- <th scope="col">rid</th> -->
+      <th scope="col">details</th>
     </tr>
   </thead>
   <tbody>
@@ -169,6 +173,8 @@
         
       </td>
       <!-- <td>{{n.rid}}</td> -->
+      <td><a href="{{url_for('show_restaurant_details', rid=n.rid)}}"><button type="button" class="btn">
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></a></td>
     </tr>
     {% endfor %}
   </tbody>
