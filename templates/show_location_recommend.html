@@ -35,7 +35,7 @@
   </ul>
   <!-- Greetings -->
   <p>Hello <span id="username">{{ username }}</span></p>
-  <p><a href="search_restaurants">Search Restaurants</a></p>
+  
   
 
 
@@ -69,7 +69,7 @@
     <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">rid</th>
+            <!-- <th scope="col">rid</th> -->
             <th scope="col">name</th>
             <th scope="col">postal_code</th>
             <th scope="col">state</th>
@@ -84,7 +84,7 @@
           {% for n in location_recoms %}
           {% if n.r_name %}
           <tr>
-            <th scope="row">{{n.rid}}</th>
+            <!-- <th scope="row">{{n.rid}}</th> -->
             
             <td>{{n.r_name}}</td>
             <td>{{n.postal_code}}</td>
