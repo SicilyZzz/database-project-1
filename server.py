@@ -682,7 +682,7 @@ def show_restaurant_details():
     ########
     tips=[]
     try:
-        cursor = g.conn.execute('SELECT * FROM tip_writes WHERE rid=%(rid)s', restaurant)
+        cursor = g.conn.execute('SELECT * FROM tip_writes WHERE rid=%(rid)s ORDER BY t_date DESC', restaurant)
         for result in cursor:
             tips.append(dict(result))
             # names.append(result['r_name'])  # can also be accessed using result[0]
@@ -735,7 +735,7 @@ def show_restaurant_details():
 
     reviews=[]
     try:
-        cursor = g.conn.execute('SELECT * FROM reviews WHERE rid=%(rid)s', restaurant)
+        cursor = g.conn.execute('SELECT * FROM reviews WHERE rid=%(rid)s ORDER BY date DESC', restaurant)
         for result in cursor:
             reviews.append(dict(result))
             # names.append(result['r_name'])  # can also be accessed using result[0]
@@ -1029,12 +1029,30 @@ def show_friend_list():
             cursor.close()
         except:
             flash('error in select user in friends')
-
-    
+    reviews=[]
+    for fuid in friends_uid:
+        try:
+            cursor = g.conn.execute('SELECT * FROM reviews R, users U WHERE R.uid=%(uid_b)s AND U.uid=R.uid ORDER BY R.date DESC', fuid)
+            for result in cursor:
+                reviews.append(dict(result))
+                reviews[-1]['is_friend']=True
+            cursor.close()
+        except:
+            flash('error in select user in reviews')
+    tips=[]
+    for fuid in friends_uid:
+        try:
+            cursor = g.conn.execute('SELECT * FROM tip_writes T, users U WHERE T.uid=%(uid_b)s AND U.uid=T.uid ORDER BY T.t_date DESC', fuid)
+            for result in cursor:
+                tips.append(dict(result))
+                tips[-1]['is_friend']=True
+            cursor.close()
+        except:
+            flash('error in select user in tips')
 
     
     # print(reviews)
-    context = dict(data = friends, username=username)
+    context = dict(data = friends, username=username, reviews=reviews, tips=tips)
 
     return render_template("show_friend_list.html", **context)
 
