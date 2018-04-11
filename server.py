@@ -366,13 +366,13 @@ def search_restaurants_act():
                     else:
                         restaurants[i]=str(False)
             else:
-                restaurants[col]=str(request.form[col])
+                # transfer the special character (single quote) in sql query
+                restaurants[col]=str(request.form[col]).replace("'", "''")
 
     print(restaurants)
     keys = restaurants.keys()
     # add the constraints into the WHERE clause
     for col in keys:
-        print(restaurants[col])
         if restaurants[col]!="Not Specified" and restaurants[col]!="":
             sp=""
             if type(restaurants[col])==type(""):
@@ -462,7 +462,8 @@ def search_restaurants_fuzzy_act():
                     else:
                         restaurants[i]=str(False)
             else:
-                restaurants[col]=str(request.form[col])
+                # transfer the special character (single quote) in sql query
+                restaurants[col]=str(request.form[col]).replace("'", "''")
 
     print(restaurants)
     keys = restaurants.keys()
