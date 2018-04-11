@@ -208,7 +208,7 @@ def show_location_recommend(latitude=40.8075355,longitude=-73.9647667):
     location['latitude']=latitude
     location['longitude']=longitude
     try:
-        cursor = g.conn.execute("SELECT * FROM restaurants R, location L, open_location OL WHERE R.rid=OL.rid AND L.address=OL.address AND L.postal_code=OL.postal_code AND %(latitude)s-5<L.latitude AND L.latitude<%(latitude)s+5 AND %(longitude)s-0.5<L.longitude AND L.longitude<%(longitude)s+0.5", location)
+        cursor = g.conn.execute("SELECT * FROM restaurants R, location L, open_location OL WHERE R.rid=OL.rid AND R.stars= 5 AND L.address=OL.address AND L.postal_code=OL.postal_code AND %(latitude)s-5<L.latitude AND L.latitude<%(latitude)s+5 AND %(longitude)s-0.5<L.longitude AND L.longitude<%(longitude)s+0.5", location)
         
         for result in cursor:
             recom=dict(result)
