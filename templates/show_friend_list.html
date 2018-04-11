@@ -68,7 +68,7 @@
         {% for n in data %}
         <tr>
           <td>{{n.u_name}} <a href="{{url_for('del_friend_act_at_friend_list', uid=n.uid)}}"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a> </td>
-          <th scope="row">{{n.since}}</th>
+          <td scope="row">{{n.since}}</td>
         </tr>
         {% endfor %}
                  
